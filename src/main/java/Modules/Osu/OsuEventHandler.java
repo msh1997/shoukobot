@@ -1,4 +1,4 @@
-package Modules.Osu;
+package modules.osu;
 
 import net.dv8tion.jda.core.events.message.MessageReceivedEvent;
 import org.json.simple.JSONArray;

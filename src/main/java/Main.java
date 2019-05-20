@@ -1,4 +1,4 @@
-import Listener.MessageListener;
+import listener.MessageListener;
 import net.dv8tion.jda.core.AccountType;
 import net.dv8tion.jda.core.JDABuilder;
 
