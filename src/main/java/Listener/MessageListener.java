@@ -1,7 +1,7 @@
-package Listener;
+package listener;
 
-import Modules.Osu.OsuEventHandler;
-import Services.MessageParser;
+import modules.osu.OsuEventHandler;
+import services.MessageParser;
 import net.dv8tion.jda.core.events.message.MessageReceivedEvent;
 import net.dv8tion.jda.core.hooks.ListenerAdapter;
 

@@ -1,4 +1,4 @@
-package Modules.Osu;
+package modules.osu;
 
 public class OsuUser {
 
