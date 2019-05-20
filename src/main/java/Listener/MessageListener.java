@@ -1,16 +1,27 @@
-package Listeners;
+package Listener;
 
+import Osu.OsuEventHandler;
 import Services.MessageParser;
 import net.dv8tion.jda.core.events.message.MessageReceivedEvent;
 import net.dv8tion.jda.core.hooks.ListenerAdapter;
 
-public class TestListener extends ListenerAdapter {
+public class MessageListener extends ListenerAdapter {
 
     private MessageParser messageParser = new MessageParser();
     private String prefix;
+    private OsuEventHandler osuEventHandler;
 
-    public TestListener(String prefix){
+    public MessageListener(String prefix){
         this.prefix = prefix;
+        osuEventHandler = new OsuEventHandler();
+    }
+
+    public OsuEventHandler getOsuEventHandler() {
+        return osuEventHandler;
+    }
+
+    public void setOsuEventHandler(OsuEventHandler osuEventHandler) {
+        this.osuEventHandler = osuEventHandler;
     }
 
     @Override
@@ -23,8 +34,13 @@ public class TestListener extends ListenerAdapter {
         }
 
         messages[0] = messages[0].substring(this.prefix.length());
+        switch(messages[0]){
+            case "osu":
+                osuEventHandler.osuEvent(messages, event);
+                break;
+        }
 
-        if(messages[0].equals("ping")) {
+        /*if(messages[0].equals("ping")) {
             event.getChannel().sendMessage("pong").queue();
         }
 
@@ -40,6 +56,6 @@ public class TestListener extends ListenerAdapter {
             else {
                 event.getChannel().sendMessage("Empty echo arguments.").queue();
             }
-        }
+        }*/
     }
 }
