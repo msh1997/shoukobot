@@ -7,6 +7,11 @@ import net.dv8tion.jda.core.hooks.ListenerAdapter;
 public class TestListener extends ListenerAdapter {
 
     private MessageParser messageParser = new MessageParser();
+    private String prefix;
+
+    public TestListener(String prefix){
+        this.prefix = prefix;
+    }
 
     @Override
     public void onMessageReceived(MessageReceivedEvent event){

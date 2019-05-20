@@ -16,7 +16,7 @@ public class Main {
         setProperties();
         JDABuilder builder = new JDABuilder(AccountType.BOT);
         builder.setToken(token);
-        TestListener listener = new TestListener();
+        TestListener listener = new TestListener(prefix);
         builder.addEventListener(listener);
         builder.buildAsync();
     }
