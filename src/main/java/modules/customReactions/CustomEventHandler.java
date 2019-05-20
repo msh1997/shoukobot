@@ -33,10 +33,12 @@ public class CustomEventHandler {
         }
     }
 
-    public void customEvent(String[] messages, MessageReceivedEvent event){
-        if(messages[0].equals("add")) {
-            event.getChannel().sendMessage("custom add reached").queue();
-        }
+    public boolean containsCustomEvent(String customEvent){
+        return commandMap.containsKey(customEvent);
+    }
+
+    public void customEvent(String message, MessageReceivedEvent event){
+        event.getChannel().sendMessage(commandMap.get(message)).queue();
     }
 }
 
