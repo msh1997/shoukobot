@@ -42,8 +42,8 @@ public class CustomEventHandler {
         event.getChannel().sendMessage(commandMap.get(message)).queue();
     }
 
-    public void customCommandEvent(String[] messages, String msg,MessageReceivedEvent event) {
-        if(messages[0].equals("add")) {
+    public void addCustomCommand(String[] messages, String msg, MessageReceivedEvent event) {
+        if(messages[1].equals("add")) {
             if(containsCustomEvent(msg)) {
                 event.getChannel().sendMessage("That custom prompt already exists.").queue();
             }

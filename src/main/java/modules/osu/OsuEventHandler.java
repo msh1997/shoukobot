@@ -15,7 +15,7 @@ import java.util.List;
 
 public class OsuEventHandler {
 
-    private List<OsuUser> osuUsersList = new ArrayList<>();
+    private List<String> osuUsersList = new ArrayList<>();
 
     public OsuEventHandler(){
         JSONParser jsonParser = new JSONParser();
@@ -26,7 +26,7 @@ public class OsuEventHandler {
 
             JSONArray usersJsonArray = (JSONArray)(obj.get("users"));
 
-            usersJsonArray.forEach( user -> osuUsersList.add(new OsuUser((String)user)));
+            usersJsonArray.forEach( user -> osuUsersList.add((String)user));
 
         } catch (FileNotFoundException e) {
             e.printStackTrace();
@@ -46,7 +46,11 @@ public class OsuEventHandler {
             username += messages[i];
         }
 
-        osuUsersList.add(OsuApiService.getUser(username));
+        if(osuUsersList.contains(username)){
+            event.getChannel().sendMessage("User is already being tracked").queue();
+            return;
+        }
+        osuUsersList.add(username);
         writeTrackedUsersJson();
         event.getChannel().sendMessage(messages[2] + " added to tracking list").queue();
     }
@@ -59,8 +63,8 @@ public class OsuEventHandler {
             username += messages[i];
         }
 
-        for(OsuUser user : osuUsersList){
-            if(user.getUsername().equals(username)){
+        for(String user : osuUsersList){
+            if(user.equals(username)){
                 osuUsersList.remove(user);
                 writeTrackedUsersJson();
                 event.getChannel().sendMessage("User " + username + " removed from tracking list").queue();
@@ -73,8 +77,8 @@ public class OsuEventHandler {
     public void listTrackedUsers(String[] messages, MessageReceivedEvent event){
 
         String message = "";
-        for(OsuUser user : osuUsersList){
-            message += user.getUsername() + "\n";
+        for(String user : osuUsersList){
+            message += user + "\n";
         }
 
         if(message.equals("")){
@@ -88,8 +92,8 @@ public class OsuEventHandler {
     public void writeTrackedUsersJson(){
         JSONObject usersJson = new JSONObject();
         JSONArray usersJsonArray = new JSONArray();
-        for(OsuUser user : osuUsersList){
-            usersJsonArray.add(user.getUsername());
+        for(String user : osuUsersList){
+            usersJsonArray.add(user);
         }
         usersJson.put("users", usersJsonArray);
         try (FileWriter file = new FileWriter("resources/OsuUsers.json")) {
