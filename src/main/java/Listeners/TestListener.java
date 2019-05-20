@@ -13,12 +13,26 @@ public class TestListener extends ListenerAdapter {
         System.out.println("Received a message from " + event.getAuthor().getName() + ": " + event.getMessage().getContentDisplay());
         String[] messages = messageParser.parseMessage(event.getMessage().getContentRaw());
 
-        if(!messages[0].equals(".r")){
+        if(!messages[0].equals(".r")) {
             return;
         }
 
         if(messages[1].equals("ping")) {
             event.getChannel().sendMessage("pong").queue();
+        }
+
+        if(messages[1].equals("echo")) {
+            if(messages.length > 2) {
+                StringBuilder strBuilder = new StringBuilder();
+                for (int i = 2; i < messages.length; i++) {
+                    strBuilder.append(messages[i]);
+                }
+                String msg = strBuilder.toString();
+                event.getChannel().sendMessage(msg).queue();
+            }
+            else {
+                event.getChannel().sendMessage("Empty echo arguments.").queue();
+            }
         }
     }
 }
