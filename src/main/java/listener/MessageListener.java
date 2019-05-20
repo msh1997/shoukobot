@@ -31,11 +31,13 @@ public class MessageListener extends ListenerAdapter {
 
     @Override
     public void onMessageReceived(MessageReceivedEvent event){
+
+        if(event.getAuthor().isBot()) return;
+
         System.out.println("Received a message from " + event.getAuthor().getName() + ": " + event.getMessage().getContentDisplay());
         String[] messages = messageParser.parseMessage(event.getMessage().getContentRaw());
 
         if(!messages[0].startsWith(this.prefix)) return;
-        if(event.getAuthor().isBot()) return;
 
         messages[0] = messages[0].substring(this.prefix.length());
         switch(messages[0]){
