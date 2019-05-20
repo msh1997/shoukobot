@@ -42,42 +42,25 @@ public class CustomEventHandler {
         event.getChannel().sendMessage(commandMap.get(message)).queue();
     }
 
-    public void customCommandEvent(String [] messages, String msg, MessageReceivedEvent event) {
-        if(messages[1].equals("list")) {
-            StringBuilder strBuilder = new StringBuilder();
-            strBuilder.append("Custom Reactions:\n");
-            for (Map.Entry<String, String> entry : commandMap.entrySet()) {
-                String key = entry.getKey();
-                String value = entry.getValue();
-                strBuilder.append(key + " : " + value + "\n");
-            }
-            String reactionList = strBuilder.toString();
-            event.getChannel().sendMessage(reactionList).queue();
+    public void listCustomCommands(MessageReceivedEvent event){
+        StringBuilder strBuilder = new StringBuilder();
+        strBuilder.append("Custom Reactions:\n");
+        for (Map.Entry<String, String> entry : commandMap.entrySet()) {
+            String key = entry.getKey();
+            String value = entry.getValue();
+            strBuilder.append(key + " : " + value + "\n");
         }
-        else if(messages[1].equals("add")) {
-            if(containsCustomEvent(msg)) {
-                event.getChannel().sendMessage("That reaction already exists.").queue();
-            }
-            else {
-                String [] splitMsg = msg.split("\"");
-                commandMap.put(splitMsg[1], splitMsg[2]);
+        String reactionList = strBuilder.toString();
+        event.getChannel().sendMessage(reactionList).queue();
+    }
 
-                JSONObject obj = (JSONObject)commandMap;
-                try (FileWriter file = new FileWriter("resources/CustomCommands.json")) {
-
-                    file.write(obj.toJSONString());
-                    file.flush();
-
-                } catch (IOException e) {
-                    e.printStackTrace();
-                }
-                event.getChannel().sendMessage("Reaction successfully added.").queue();
-            }
+    public void addCustomCommand(String msg, MessageReceivedEvent event){
+        if(containsCustomEvent(msg)) {
+            event.getChannel().sendMessage("That reaction already exists.").queue();
         }
-        else if(messages[1].equals("delete")) {
-            int idx = msg.indexOf("delete");
-            String substr = msg.substring(idx + "delete".length() + 1);
-            String result = commandMap.remove(substr);
+        else {
+            String [] splitMsg = msg.split("\"");
+            commandMap.put(splitMsg[1], splitMsg[2]);
 
             JSONObject obj = (JSONObject)commandMap;
             try (FileWriter file = new FileWriter("resources/CustomCommands.json")) {
@@ -88,11 +71,40 @@ public class CustomEventHandler {
             } catch (IOException e) {
                 e.printStackTrace();
             }
+            event.getChannel().sendMessage("Reaction successfully added.").queue();
+        }
+    }
 
-            if(result == null)
-                event.getChannel().sendMessage("Reaction did not exist.").queue();
-            else
-                event.getChannel().sendMessage("Reaction successfully deleted.").queue();
+    public void deleteCustomCommand(String msg, MessageReceivedEvent event){
+        int idx = msg.indexOf("delete");
+        String substr = msg.substring(idx + "delete".length() + 1);
+        String result = commandMap.remove(substr);
+
+        JSONObject obj = (JSONObject)commandMap;
+        try (FileWriter file = new FileWriter("resources/CustomCommands.json")) {
+
+            file.write(obj.toJSONString());
+            file.flush();
+
+        } catch (IOException e) {
+            e.printStackTrace();
+        }
+
+        if(result == null)
+            event.getChannel().sendMessage("Reaction did not exist.").queue();
+        else
+            event.getChannel().sendMessage("Reaction successfully deleted.").queue();
+    }
+
+    public void customCommandEvent(String [] messages, String msg, MessageReceivedEvent event) {
+        if(messages[1].equals("list")) {
+            listCustomCommands(event);
+        }
+        else if(messages[1].equals("add")) {
+            addCustomCommand(msg, event);
+        }
+        else if(messages[1].equals("delete")) {
+            deleteCustomCommand(msg, event);
         }
     }
 }
