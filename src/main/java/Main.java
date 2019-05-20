@@ -1,4 +1,4 @@
-import Listeners.TestListener;
+import Listener.MessageListener;
 import net.dv8tion.jda.core.AccountType;
 import net.dv8tion.jda.core.JDABuilder;
 
@@ -16,7 +16,7 @@ public class Main {
         setProperties();
         JDABuilder builder = new JDABuilder(AccountType.BOT);
         builder.setToken(token);
-        TestListener listener = new TestListener(prefix);
+        MessageListener listener = new MessageListener(prefix);
         builder.addEventListener(listener);
         builder.buildAsync();
     }
