@@ -51,7 +51,7 @@ public class MessageListener extends ListenerAdapter {
                 osuEventHandler.osuEvent(messages, event);
                 break;
             case "reaction":
-                //customEventHandler.customEvent(messages, event);
+                customEventHandler.customCommandEvent(messages, event.getMessage().getContentRaw(), event);
                 break;
         }
     }

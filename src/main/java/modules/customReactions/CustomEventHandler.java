@@ -7,6 +7,7 @@ import org.json.simple.parser.ParseException;
 import java.io.FileNotFoundException;
 import java.io.FileReader;
 //import java.io.FileWriter;
+import java.io.FileWriter;
 import java.io.IOException;
 import java.util.HashMap;
 
@@ -39,6 +40,28 @@ public class CustomEventHandler {
 
     public void customEvent(String message, MessageReceivedEvent event){
         event.getChannel().sendMessage(commandMap.get(message)).queue();
+    }
+
+    public void customCommandEvent(String[] messages, String msg,MessageReceivedEvent event) {
+        if(messages[0].equals("add")) {
+            if(containsCustomEvent(msg)) {
+                event.getChannel().sendMessage("That custom prompt already exists.").queue();
+            }
+            else {
+                String [] splitMsg = msg.split("\"");
+                commandMap.put(splitMsg[1], splitMsg[2]);
+
+                JSONObject obj = (JSONObject)commandMap;
+                try (FileWriter file = new FileWriter("resources/CustomCommands.json")) {
+
+                    file.write(obj.toJSONString());
+                    file.flush();
+
+                } catch (IOException e) {
+                    e.printStackTrace();
+                }
+            }
+        }
     }
 }
 
