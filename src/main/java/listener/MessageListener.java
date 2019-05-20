@@ -22,17 +22,23 @@ public class MessageListener extends ListenerAdapter {
     public OsuEventHandler getOsuEventHandler() {
         return osuEventHandler;
     }
+
     public void setOsuEventHandler(OsuEventHandler osuEventHandler) {
         this.osuEventHandler = osuEventHandler;
     }
 
     public CustomEventHandler getCustomEventHandler() { return customEventHandler; }
+
     public void setCustomEventHandler(CustomEventHandler customEventHandler) { this.customEventHandler = customEventHandler; }
 
     @Override
     public void onMessageReceived(MessageReceivedEvent event){
         System.out.println("Received a message from " + event.getAuthor().getName() + ": " + event.getMessage().getContentDisplay());
         String[] messages = messageParser.parseMessage(event.getMessage().getContentRaw());
+
+        if(customEventHandler.containsCustomEvent(event.getMessage().getContentRaw())){
+            customEventHandler.customEvent(event.getMessage().getContentRaw(), event);
+        }
 
         if(!messages[0].startsWith(this.prefix)) return;
         if(event.getAuthor().isBot()) return;
@@ -43,7 +49,7 @@ public class MessageListener extends ListenerAdapter {
                 osuEventHandler.osuEvent(messages, event);
                 break;
             case "reaction":
-                customEventHandler.customEvent(messages, event);
+                //customEventHandler.customEvent(messages, event);
                 break;
         }
     }
