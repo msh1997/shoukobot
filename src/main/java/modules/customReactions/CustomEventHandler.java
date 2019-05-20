@@ -1,9 +1,13 @@
 package modules.customReactions;
 
+import net.dv8tion.jda.core.EmbedBuilder;
+import net.dv8tion.jda.core.MessageBuilder;
 import net.dv8tion.jda.core.events.message.MessageReceivedEvent;
 import org.json.simple.JSONObject;
 import org.json.simple.parser.JSONParser;
 import org.json.simple.parser.ParseException;
+
+import java.awt.*;
 import java.io.FileNotFoundException;
 import java.io.FileReader;
 import java.io.FileWriter;
@@ -44,14 +48,22 @@ public class CustomEventHandler {
 
     public void listCustomCommands(MessageReceivedEvent event){
         StringBuilder strBuilder = new StringBuilder();
-        strBuilder.append("Custom Reactions:\n");
         for (Map.Entry<String, String> entry : commandMap.entrySet()) {
             String key = entry.getKey();
             String value = entry.getValue();
             strBuilder.append(key + " : " + value + "\n");
         }
         String reactionList = strBuilder.toString();
-        event.getChannel().sendMessage(reactionList).queue();
+
+        EmbedBuilder eb = new EmbedBuilder();
+        MessageBuilder mb = new MessageBuilder();
+
+        Color green = new Color(0, 255, 0);
+        eb.setColor(green);
+        eb.addField("Custom Reaction List:", reactionList, true);
+        mb.setEmbed(eb.build());
+
+        event.getChannel().sendMessage(mb.build()).queue();
     }
 
     public void addCustomCommand(String msg, MessageReceivedEvent event){
@@ -60,7 +72,7 @@ public class CustomEventHandler {
         }
         else {
             String [] splitMsg = msg.split("\"");
-            commandMap.put(splitMsg[1], splitMsg[2]);
+            commandMap.put(splitMsg[1], splitMsg[2].substring(1));
 
             JSONObject obj = (JSONObject)commandMap;
             try (FileWriter file = new FileWriter("resources/CustomCommands.json")) {
