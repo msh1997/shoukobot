@@ -1,4 +1,5 @@
 import listener.MessageListener;
+import modules.osu.OsuApiService;
 import net.dv8tion.jda.core.AccountType;
 import net.dv8tion.jda.core.JDABuilder;
 
@@ -9,22 +10,30 @@ import java.util.Properties;
 
 public class Main {
 
-    public static String token;
-    public static String prefix = "";
+    public String token;
+    public String prefix = "";
+    public String osuApiKey = "";
 
-    public static void main(String[] args) throws LoginException, IOException {
+    public Main() throws IOException, LoginException {
         setProperties();
         JDABuilder builder = new JDABuilder(AccountType.BOT);
         builder.setToken(token);
         MessageListener listener = new MessageListener(prefix);
+        OsuApiService.apiKey = osuApiKey;
         builder.addEventListener(listener);
         builder.buildAsync();
     }
 
-    public static void setProperties() throws IOException {
+    public void setProperties() throws IOException {
         Properties properties = new Properties();
         properties.load(new FileInputStream("resources/config.properties"));
         token = properties.getProperty("token");
         prefix = properties.getProperty("bot-prefix");
+        properties.load(new FileInputStream("resources/osu.properties"));
+        osuApiKey = properties.getProperty("api-key");
+    }
+
+    public static void main(String[] args) throws LoginException, IOException {
+        new Main();
     }
 }

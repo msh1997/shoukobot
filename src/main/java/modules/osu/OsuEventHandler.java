@@ -46,7 +46,7 @@ public class OsuEventHandler {
             username += messages[i];
         }
 
-        osuUsersList.add(new OsuUser(username));
+        osuUsersList.add(OsuApiService.getUser(username));
         writeTrackedUsersJson();
         event.getChannel().sendMessage(messages[2] + " added to tracking list").queue();
     }
@@ -113,4 +113,6 @@ public class OsuEventHandler {
             removeTrackedUser(messages, event);
         }
     }
+
+
 }
