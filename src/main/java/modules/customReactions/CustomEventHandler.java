@@ -6,10 +6,10 @@ import org.json.simple.parser.JSONParser;
 import org.json.simple.parser.ParseException;
 import java.io.FileNotFoundException;
 import java.io.FileReader;
-//import java.io.FileWriter;
 import java.io.FileWriter;
 import java.io.IOException;
 import java.util.HashMap;
+import java.util.Map;
 
 public class CustomEventHandler {
 
@@ -42,10 +42,21 @@ public class CustomEventHandler {
         event.getChannel().sendMessage(commandMap.get(message)).queue();
     }
 
-    public void addCustomCommand(String[] messages, String msg, MessageReceivedEvent event) {
-        if(messages[1].equals("add")) {
+    public void customCommandEvent(String [] messages, String msg, MessageReceivedEvent event) {
+        if(messages[1].equals("list")) {
+            StringBuilder strBuilder = new StringBuilder();
+            strBuilder.append("Custom Reactions:\n");
+            for (Map.Entry<String, String> entry : commandMap.entrySet()) {
+                String key = entry.getKey();
+                String value = entry.getValue();
+                strBuilder.append(key + " : " + value + "\n");
+            }
+            String reactionList = strBuilder.toString();
+            event.getChannel().sendMessage(reactionList).queue();
+        }
+        else if(messages[1].equals("add")) {
             if(containsCustomEvent(msg)) {
-                event.getChannel().sendMessage("That custom prompt already exists.").queue();
+                event.getChannel().sendMessage("That reaction already exists.").queue();
             }
             else {
                 String [] splitMsg = msg.split("\"");
@@ -60,25 +71,29 @@ public class CustomEventHandler {
                 } catch (IOException e) {
                     e.printStackTrace();
                 }
+                event.getChannel().sendMessage("Reaction successfully added.").queue();
             }
+        }
+        else if(messages[1].equals("delete")) {
+            int idx = msg.indexOf("delete");
+            String substr = msg.substring(idx + "delete".length() + 1);
+            String result = commandMap.remove(substr);
+
+            JSONObject obj = (JSONObject)commandMap;
+            try (FileWriter file = new FileWriter("resources/CustomCommands.json")) {
+
+                file.write(obj.toJSONString());
+                file.flush();
+
+            } catch (IOException e) {
+                e.printStackTrace();
+            }
+
+            if(result == null)
+                event.getChannel().sendMessage("Reaction did not exist.").queue();
+            else
+                event.getChannel().sendMessage("Reaction successfully deleted.").queue();
         }
     }
 }
 
-        /*if(messages[0].equals("ping")) {
-            event.getChannel().sendMessage("pong").queue();
-        }
-
-        if(messages[0].equals("echo")) {
-            if(messages.length > 1) {
-                StringBuilder strBuilder = new StringBuilder();
-                for (int i = 1; i < messages.length; i++) {
-                    strBuilder.append(messages[i]);
-                }
-                String msg = strBuilder.toString();
-                event.getChannel().sendMessage(msg).queue();
-            }
-            else {
-                event.getChannel().sendMessage("Empty echo arguments.").queue();
-            }
-        }*/

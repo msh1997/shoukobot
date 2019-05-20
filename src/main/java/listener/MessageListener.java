@@ -1,6 +1,7 @@
 package listener;
 
 import modules.customReactions.CustomEventHandler;
+import modules.misc.MiscEventHandler;
 import modules.osu.OsuEventHandler;
 import services.MessageParser;
 import net.dv8tion.jda.core.events.message.MessageReceivedEvent;
@@ -12,11 +13,13 @@ public class MessageListener extends ListenerAdapter {
     private String prefix;
     private OsuEventHandler osuEventHandler;
     private CustomEventHandler customEventHandler;
+    private MiscEventHandler miscEventHandler;
 
     public MessageListener(String prefix){
         this.prefix = prefix;
         osuEventHandler = new OsuEventHandler();
         customEventHandler = new CustomEventHandler();
+        miscEventHandler = new MiscEventHandler();
     }
 
     public OsuEventHandler getOsuEventHandler() {
@@ -50,8 +53,11 @@ public class MessageListener extends ListenerAdapter {
             case "osu":
                 osuEventHandler.osuEvent(messages, event);
                 break;
-            case "reaction":
-                customEventHandler.addCustomCommand(messages, event.getMessage().getContentRaw(), event);
+            case "reactions":
+                customEventHandler.customCommandEvent(messages, event.getMessage().getContentRaw(), event);
+                break;
+            default:
+                miscEventHandler.miscEvent(messages, event);
                 break;
         }
     }
