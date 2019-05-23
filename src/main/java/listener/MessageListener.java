@@ -1,6 +1,7 @@
 package listener;
 
 import modules.customReactions.CustomEventHandler;
+import modules.logs.LogsEventHandler;
 import modules.misc.MiscEventHandler;
 import modules.osu.OsuEventHandler;
 import services.MessageParser;
@@ -14,12 +15,14 @@ public class MessageListener extends ListenerAdapter {
     private OsuEventHandler osuEventHandler;
     private CustomEventHandler customEventHandler;
     private MiscEventHandler miscEventHandler;
+    private LogsEventHandler logsEventHandler;
 
     public MessageListener(String prefix){
         this.prefix = prefix;
         osuEventHandler = new OsuEventHandler();
         customEventHandler = new CustomEventHandler();
         miscEventHandler = new MiscEventHandler();
+        logsEventHandler = new LogsEventHandler();
     }
 
     public OsuEventHandler getOsuEventHandler() {
@@ -33,6 +36,10 @@ public class MessageListener extends ListenerAdapter {
     public CustomEventHandler getCustomEventHandler() { return customEventHandler; }
 
     public void setCustomEventHandler(CustomEventHandler customEventHandler) { this.customEventHandler = customEventHandler; }
+
+    public LogsEventHandler getLogsEventHandler() { return logsEventHandler; }
+
+    public void setLogsEventHandler(LogsEventHandler logsEventHandler) {this.logsEventHandler = logsEventHandler;}
 
     @Override
     public void onMessageReceived(MessageReceivedEvent event){
@@ -55,6 +62,9 @@ public class MessageListener extends ListenerAdapter {
                 break;
             case "reactions":
                 customEventHandler.customCommandEvent(messages, event.getMessage().getContentRaw(), event);
+                break;
+            case "logs":
+                logsEventHandler.logsEvent(messages, event);
                 break;
             default:
                 miscEventHandler.miscEvent(messages, event);
