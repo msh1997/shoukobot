@@ -26,4 +26,6 @@ public class Logs {
     public int getId() {
         return id;
     }
+
+    public String getLogTitle() { return logTitle; }
 }

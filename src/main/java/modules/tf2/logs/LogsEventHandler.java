@@ -2,15 +2,16 @@ package modules.tf2.logs;
 
 import com.fasterxml.jackson.core.type.TypeReference;
 import com.fasterxml.jackson.databind.ObjectMapper;
+import net.dv8tion.jda.core.EmbedBuilder;
+import net.dv8tion.jda.core.MessageBuilder;
 import net.dv8tion.jda.core.events.message.MessageReceivedEvent;
 import org.json.simple.parser.ParseException;
 
-import java.io.FileNotFoundException;
+import java.awt.*;
 import java.io.FileReader;
 import java.io.FileWriter;
 import java.io.IOException;
-import java.util.ArrayList;
-import java.util.Iterator;
+import java.util.*;
 import java.util.List;
 
 public class LogsEventHandler {
@@ -46,8 +47,6 @@ public class LogsEventHandler {
 
     private void getTrackedUser(String[] messages, MessageReceivedEvent event) throws IOException, ParseException {
         if(containsName(messages[2])) {
-            event.getChannel().sendMessage("getTrackedUser exists reached.").queue();
-
             LogsUser user = null;
             for(LogsUser tempUser : logsUserList){
                 if(tempUser.getUsername().equals(messages[2])){
@@ -57,11 +56,24 @@ public class LogsEventHandler {
             }
 
             List<Logs> logsList = logsApiService.getLogsByUser(user, 3);
-            String returnMessage = "";
+
+            String logString = "";
+            String titleString = "";
             for(Logs logs : logsList){
-                returnMessage += "http://logs.tf/" + logs.getId() + "\n";
+                logString += "<http://logs.tf/" + logs.getId() + ">\n";
+                titleString += logs.getLogTitle() + "\n";
             }
-            event.getChannel().sendMessage(returnMessage).queue();
+
+            EmbedBuilder eb = new EmbedBuilder();
+            MessageBuilder mb = new MessageBuilder();
+
+            Color green = new Color(0, 255, 0);
+            eb.setColor(green);
+            eb.addField("Most recent logs for " + user.getUsername() + ":", logString, true);
+            eb.addField("", titleString, true);
+            mb.setEmbed(eb.build());
+
+            event.getChannel().sendMessage(mb.build()).queue();
         }
         else {
             event.getChannel().sendMessage("That user is not being tracked.").queue();

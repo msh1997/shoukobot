@@ -25,9 +25,6 @@ public class CustomEventHandler {
             //Read JSON file
             JSONObject obj = (JSONObject)jsonParser.parse(reader);
             commandMap = (HashMap)obj;
-
-            System.out.println(commandMap);
-
         } catch (IOException | ParseException e) {
             e.printStackTrace();
         }
