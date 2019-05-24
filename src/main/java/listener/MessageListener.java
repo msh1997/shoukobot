@@ -1,5 +1,6 @@
 package listener;
 
+import java.util.regex.*;
 import modules.customReactions.CustomEventHandler;
 import modules.logs.LogsEventHandler;
 import modules.misc.MiscEventHandler;
@@ -55,7 +56,29 @@ public class MessageListener extends ListenerAdapter {
             customEventHandler.customEvent(event.getMessage().getContentRaw(), event);
         }
 
-        if(!messages[0].startsWith(this.prefix)) return;
+        if(!messages[0].startsWith(this.prefix)) {
+            if (messages[0].equals("connect")) {
+                String content = event.getMessage().getContentRaw();
+                content = content.replaceFirst("https://", "");
+                Pattern connectString = Pattern.compile("(connect) (([a-zA-Z0-9]|\\.)+)\\:[0-9]+(\\;\\s*(password) (.)+)*");
+                Matcher m = connectString.matcher(content);
+                if (m.matches()) {
+                    String info;
+                    String password = messages[messages.length-1];
+                    if (messages.length == 2) {
+                        info = "steam://" + messages[0] + "/" + messages[1];
+                    } else if (messages.length == 3) {
+                        String host = messages[1].replace(";password", "");
+                        info = "steam://" + messages[0] + "/" + host + "/" + password;
+                    } else {
+                        String host = messages[1].substring(0, messages[1].length() - 1);
+                        info = "steam://" + messages[0] + "/" + host + "/" + password;
+                    }
+                    event.getChannel().sendMessage(info).queue();
+                }
+            }
+            return;
+        }
 
         messages[0] = messages[0].substring(this.prefix.length());
         switch(messages[0]){
