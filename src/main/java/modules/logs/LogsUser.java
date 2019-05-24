@@ -1,12 +1,24 @@
 package modules.logs;
 
+import com.fasterxml.jackson.annotation.JsonCreator;
+import com.fasterxml.jackson.annotation.JsonProperty;
+
 public class LogsUser {
 
     private String steamId;
+    private String username;
 
-    public LogsUser(String steamId) { this.steamId = steamId; }
+    @JsonCreator
+    public LogsUser(@JsonProperty("steamid") String steamId, @JsonProperty("username") String username) {
+        this.steamId = steamId;
+        this.username = username;
+    }
 
-    public void setSteamId(String steamId) { this.steamId = steamId; }
-
+    @JsonProperty("steamid")
     public String getSteamId() { return steamId; }
+
+    @JsonProperty("username")
+    public String getUsername(){
+        return username;
+    }
 }
