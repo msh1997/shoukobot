@@ -9,6 +9,7 @@ import java.io.FileReader;
 import java.io.FileWriter;
 import java.io.IOException;
 import java.util.ArrayList;
+import java.util.Iterator;
 import java.util.List;
 
 public class LogsEventHandler {
@@ -38,6 +39,9 @@ public class LogsEventHandler {
         else if(messages[1].equals("add")){
             addTrackedUser(messages, event);
         }
+        else if(messages[1].equals("remove")) {
+            removeTrackedUser(messages, event);
+        }
     }
 
     public void getTrackedUser(String[] messages, MessageReceivedEvent event) {
@@ -66,6 +70,31 @@ public class LogsEventHandler {
             } catch (IOException e) {
                 e.printStackTrace();
             }
+        }
+    }
+
+    public void removeTrackedUser(String[] messages, MessageReceivedEvent event) {
+        if(containsName(messages[2]) || containsId(messages[2])) {
+            String name = "";
+            String ID = "";
+            for (Iterator<LogsUser> iter = logsUserList.listIterator(); iter.hasNext(); ) {
+                LogsUser tempUser = iter.next();
+                if (tempUser.getUsername().equals(messages[2]) || tempUser.getSteamId().equals(messages[2])) {
+                    name = tempUser.getUsername();
+                    ID = tempUser.getSteamId();
+                    iter.remove();
+                }
+            }
+
+            try (FileWriter file = new FileWriter("resources/LogsUsers.json")) {
+                objectMapper.writeValue(file, logsUserList);
+                event.getChannel().sendMessage("Successfully removed \"" + name + "\" with SteamId64: " + ID + " from tracked users.").queue();
+            } catch (IOException e) {
+                e.printStackTrace();
+            }
+        }
+        else {
+            event.getChannel().sendMessage("User and/or steamID is not being tracked.").queue();
         }
     }
 
