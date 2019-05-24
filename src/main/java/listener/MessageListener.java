@@ -2,14 +2,12 @@ package listener;
 
 import java.util.regex.*;
 import modules.customReactions.CustomEventHandler;
-import modules.logs.LogsEventHandler;
+import modules.tf2.logs.LogsEventHandler;
 import modules.misc.MiscEventHandler;
 import modules.osu.OsuEventHandler;
 import services.MessageParser;
 import net.dv8tion.jda.core.events.message.MessageReceivedEvent;
 import net.dv8tion.jda.core.hooks.ListenerAdapter;
-
-import java.util.Date;
 
 public class MessageListener extends ListenerAdapter {
 

@@ -3,6 +3,6 @@ resources/OsuUsers.json
 resources/CustomCommands.json
 .gradle
 .idea
+.idea/misc.xml
 build
 out
-

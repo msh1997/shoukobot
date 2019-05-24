@@ -1,8 +1,7 @@
-package modules.logs;
+package modules.tf2.logs;
 
 import com.fasterxml.jackson.databind.ObjectMapper;
 import net.dv8tion.jda.core.events.message.MessageReceivedEvent;
-import org.json.simple.JSONArray;
 import org.json.simple.parser.JSONParser;
 
 import java.io.FileWriter;

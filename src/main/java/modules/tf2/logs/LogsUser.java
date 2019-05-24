@@ -1,4 +1,4 @@
-package modules.logs;
+package modules.tf2.logs;
 
 import com.fasterxml.jackson.annotation.JsonCreator;
 import com.fasterxml.jackson.annotation.JsonProperty;
