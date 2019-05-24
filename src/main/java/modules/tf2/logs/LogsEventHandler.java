@@ -42,7 +42,29 @@ public class LogsEventHandler {
             case "remove":
                 removeTrackedUser(messages, event);
                 break;
+            case "list":
+                listTrackedUsers(event);
+                break;
         }
+    }
+
+    private void listTrackedUsers(MessageReceivedEvent event) {
+        String users = "";
+        String ids = "";
+        for(LogsUser user : logsUserList) {
+            users += user.getUsername() + "\n";
+            ids += user.getSteamId() + "\n";
+        }
+        EmbedBuilder eb = new EmbedBuilder();
+        MessageBuilder mb = new MessageBuilder();
+
+        Color green = new Color(0, 255, 0);
+        eb.setColor(green);
+        eb.addField("Currently Tracked Users:", users, true);
+        eb.addField("", ids, true);
+        mb.setEmbed(eb.build());
+
+        event.getChannel().sendMessage(mb.build()).queue();
     }
 
     private void getTrackedUser(String[] messages, MessageReceivedEvent event) throws IOException, ParseException {
