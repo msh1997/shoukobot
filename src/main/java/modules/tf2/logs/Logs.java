@@ -22,4 +22,8 @@ public class Logs {
         this.playerCount = playerCount;
         this.date = new Date(date);
     }
+
+    public int getId() {
+        return id;
+    }
 }

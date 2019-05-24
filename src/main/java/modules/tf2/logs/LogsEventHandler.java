@@ -5,6 +5,7 @@ import com.fasterxml.jackson.databind.ObjectMapper;
 import net.dv8tion.jda.core.events.message.MessageReceivedEvent;
 import org.json.simple.parser.ParseException;
 
+import java.io.FileNotFoundException;
 import java.io.FileReader;
 import java.io.FileWriter;
 import java.io.IOException;
@@ -29,7 +30,7 @@ public class LogsEventHandler {
         }
     }
 
-    public void logsEvent(String[] messages, MessageReceivedEvent event) {
+    public void logsEvent(String[] messages, MessageReceivedEvent event) throws IOException, ParseException {
         switch (messages[1]) {
             case "get":
                 getTrackedUser(messages, event);
@@ -43,10 +44,24 @@ public class LogsEventHandler {
         }
     }
 
-    private void getTrackedUser(String[] messages, MessageReceivedEvent event) {
+    private void getTrackedUser(String[] messages, MessageReceivedEvent event) throws IOException, ParseException {
         if(containsName(messages[2])) {
             event.getChannel().sendMessage("getTrackedUser exists reached.").queue();
-            // TODO: Implement
+
+            LogsUser user = null;
+            for(LogsUser tempUser : logsUserList){
+                if(tempUser.getUsername().equals(messages[2])){
+                    user = tempUser;
+                    break;
+                }
+            }
+
+            List<Logs> logsList = logsApiService.getLogsByUser(user, 3);
+            String returnMessage = "";
+            for(Logs logs : logsList){
+                returnMessage += "http://logs.tf/" + logs.getId() + "\n";
+            }
+            event.getChannel().sendMessage(returnMessage).queue();
         }
         else {
             event.getChannel().sendMessage("That user is not being tracked.").queue();

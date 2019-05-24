@@ -5,9 +5,12 @@ import modules.tf2.logs.LogsEventHandler;
 import modules.tf2.ConnectStringParser;
 import modules.misc.MiscEventHandler;
 import modules.osu.OsuEventHandler;
+import org.json.simple.parser.ParseException;
 import services.MessageParser;
 import net.dv8tion.jda.core.events.message.MessageReceivedEvent;
 import net.dv8tion.jda.core.hooks.ListenerAdapter;
+
+import java.io.IOException;
 
 public class MessageListener extends ListenerAdapter {
 
@@ -72,7 +75,13 @@ public class MessageListener extends ListenerAdapter {
                 customEventHandler.customCommandEvent(messages, event.getMessage().getContentRaw(), event);
                 break;
             case "logs":
-                logsEventHandler.logsEvent(messages, event);
+                try {
+                    logsEventHandler.logsEvent(messages, event);
+                } catch (IOException e) {
+                    e.printStackTrace();
+                } catch (ParseException e) {
+                    e.printStackTrace();
+                }
                 break;
             default:
                 miscEventHandler.miscEvent(messages, event);
