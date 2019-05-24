@@ -3,6 +3,7 @@ package modules.tf2.logs;
 import com.fasterxml.jackson.core.type.TypeReference;
 import com.fasterxml.jackson.databind.ObjectMapper;
 import net.dv8tion.jda.core.events.message.MessageReceivedEvent;
+import org.json.simple.parser.ParseException;
 
 import java.io.FileReader;
 import java.io.FileWriter;
@@ -15,11 +16,10 @@ public class LogsEventHandler {
 
     private List<LogsUser> logsUserList = new ArrayList<>();
     private ObjectMapper objectMapper = new ObjectMapper();
+    private LogsApiService logsApiService = new LogsApiService();
 
     public LogsEventHandler() {
-        try (FileReader reader = new FileReader("resources/LogsUsers.json"))
-        {
-            //Read JSON file
+        try (FileReader reader = new FileReader("resources/LogsUsers.json")) {
             logsUserList = objectMapper.readValue(reader, new TypeReference<List<LogsUser>>(){});
 
             System.out.println(logsUserList);
