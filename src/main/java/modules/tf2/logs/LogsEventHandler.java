@@ -4,7 +4,6 @@ import com.fasterxml.jackson.core.type.TypeReference;
 import com.fasterxml.jackson.databind.ObjectMapper;
 import net.dv8tion.jda.core.events.message.MessageReceivedEvent;
 
-import java.io.FileNotFoundException;
 import java.io.FileReader;
 import java.io.FileWriter;
 import java.io.IOException;
@@ -14,7 +13,7 @@ import java.util.List;
 
 public class LogsEventHandler {
 
-    List<LogsUser> logsUserList = new ArrayList<>();
+    private List<LogsUser> logsUserList = new ArrayList<>();
     private ObjectMapper objectMapper = new ObjectMapper();
 
     public LogsEventHandler() {
@@ -25,26 +24,26 @@ public class LogsEventHandler {
 
             System.out.println(logsUserList);
 
-        } catch (FileNotFoundException e) {
-            e.printStackTrace();
         } catch (IOException e) {
             e.printStackTrace();
         }
     }
 
     public void logsEvent(String[] messages, MessageReceivedEvent event) {
-        if(messages[1].equals("get")) {
-            getTrackedUser(messages, event);
-        }
-        else if(messages[1].equals("add")){
-            addTrackedUser(messages, event);
-        }
-        else if(messages[1].equals("remove")) {
-            removeTrackedUser(messages, event);
+        switch (messages[1]) {
+            case "get":
+                getTrackedUser(messages, event);
+                break;
+            case "add":
+                addTrackedUser(messages, event);
+                break;
+            case "remove":
+                removeTrackedUser(messages, event);
+                break;
         }
     }
 
-    public void getTrackedUser(String[] messages, MessageReceivedEvent event) {
+    private void getTrackedUser(String[] messages, MessageReceivedEvent event) {
         if(containsName(messages[2])) {
             event.getChannel().sendMessage("getTrackedUser exists reached.").queue();
             // TODO: Implement
@@ -54,7 +53,7 @@ public class LogsEventHandler {
         }
     }
 
-    public void addTrackedUser(String[] messages, MessageReceivedEvent event){
+    private void addTrackedUser(String[] messages, MessageReceivedEvent event){
 
         LogsUser user = new LogsUser(messages[3], messages[2]);
 
@@ -73,7 +72,7 @@ public class LogsEventHandler {
         }
     }
 
-    public void removeTrackedUser(String[] messages, MessageReceivedEvent event) {
+    private void removeTrackedUser(String[] messages, MessageReceivedEvent event) {
         if(containsName(messages[2]) || containsId(messages[2])) {
             String name = "";
             String ID = "";
@@ -99,10 +98,10 @@ public class LogsEventHandler {
     }
 
     private boolean containsName(final String name){
-        return logsUserList.stream().map(LogsUser::getUsername).filter(name::equals).findFirst().isPresent();
+        return logsUserList.stream().map(LogsUser::getUsername).anyMatch(name::equals);
     }
 
     private boolean containsId(final String ID){
-        return logsUserList.stream().map(LogsUser::getSteamId).filter(ID::equals).findFirst().isPresent();
+        return logsUserList.stream().map(LogsUser::getSteamId).anyMatch(ID::equals);
     }
 }

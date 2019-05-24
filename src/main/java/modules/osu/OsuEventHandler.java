@@ -6,7 +6,6 @@ import org.json.simple.JSONObject;
 import org.json.simple.parser.JSONParser;
 import org.json.simple.parser.ParseException;
 
-import java.io.FileNotFoundException;
 import java.io.FileReader;
 import java.io.FileWriter;
 import java.io.IOException;
@@ -28,11 +27,7 @@ public class OsuEventHandler {
 
             usersJsonArray.forEach( user -> osuUsersList.add((String)user));
 
-        } catch (FileNotFoundException e) {
-            e.printStackTrace();
-        } catch (IOException e) {
-            e.printStackTrace();
-        } catch (ParseException e) {
+        } catch (IOException | ParseException e) {
             e.printStackTrace();
         }
 
@@ -76,16 +71,16 @@ public class OsuEventHandler {
 
     public void listTrackedUsers(String[] messages, MessageReceivedEvent event){
 
-        String message = "";
+        StringBuilder message = new StringBuilder();
         for(String user : osuUsersList){
-            message += user + "\n";
+            message.append(user).append("\n");
         }
 
-        if(message.equals("")){
+        if(message.toString().equals("")){
             event.getChannel().sendMessage("No tracked users").queue();
         }
         else{
-            event.getChannel().sendMessage(message).queue();
+            event.getChannel().sendMessage(message.toString()).queue();
         }
     }
 
@@ -117,6 +112,4 @@ public class OsuEventHandler {
             removeTrackedUser(messages, event);
         }
     }
-
-
 }

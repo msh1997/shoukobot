@@ -8,7 +8,6 @@ import org.json.simple.parser.JSONParser;
 import org.json.simple.parser.ParseException;
 
 import java.awt.*;
-import java.io.FileNotFoundException;
 import java.io.FileReader;
 import java.io.FileWriter;
 import java.io.IOException;
@@ -29,11 +28,7 @@ public class CustomEventHandler {
 
             System.out.println(commandMap);
 
-        } catch (FileNotFoundException e) {
-            e.printStackTrace();
-        } catch (IOException e) {
-            e.printStackTrace();
-        } catch (ParseException e) {
+        } catch (IOException | ParseException e) {
             e.printStackTrace();
         }
     }
@@ -51,7 +46,7 @@ public class CustomEventHandler {
         for (Map.Entry<String, String> entry : commandMap.entrySet()) {
             String key = entry.getKey();
             String value = entry.getValue();
-            strBuilder.append(key + " : " + value + "\n");
+            strBuilder.append(key).append(" : ").append(value).append("\n");
         }
         String reactionList = strBuilder.toString();
 
@@ -109,14 +104,16 @@ public class CustomEventHandler {
     }
 
     public void customCommandEvent(String [] messages, String msg, MessageReceivedEvent event) {
-        if(messages[1].equals("list")) {
-            listCustomCommands(event);
-        }
-        else if(messages[1].equals("add")) {
-            addCustomCommand(msg, event);
-        }
-        else if(messages[1].equals("delete")) {
-            deleteCustomCommand(msg, event);
+        switch (messages[1]) {
+            case "list":
+                listCustomCommands(event);
+                break;
+            case "add":
+                addCustomCommand(msg, event);
+                break;
+            case "delete":
+                deleteCustomCommand(msg, event);
+                break;
         }
     }
 }
