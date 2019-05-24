@@ -1,9 +1,12 @@
 package modules.tf2.logs;
 
+import com.fasterxml.jackson.core.type.TypeReference;
 import com.fasterxml.jackson.databind.ObjectMapper;
 import net.dv8tion.jda.core.events.message.MessageReceivedEvent;
-import org.json.simple.parser.JSONParser;
+import org.json.simple.parser.ParseException;
 
+import java.io.FileNotFoundException;
+import java.io.FileReader;
 import java.io.FileWriter;
 import java.io.IOException;
 import java.util.ArrayList;
@@ -11,12 +14,21 @@ import java.util.List;
 
 public class LogsEventHandler {
 
-    List<LogsUser> logsUserList = new ArrayList<>();
-    private JSONParser parser = new JSONParser();
+    private List<LogsUser> logsUserList = new ArrayList<>();
     private ObjectMapper objectMapper = new ObjectMapper();
+    private LogsApiService logsApiService = new LogsApiService();
 
     public LogsEventHandler() {
+        try (FileReader reader = new FileReader("resources/LogsUsers.json")) {
+            logsUserList = objectMapper.readValue(reader, new TypeReference<List<LogsUser>>(){});
 
+            System.out.println(logsUserList);
+
+        } catch (FileNotFoundException e) {
+            e.printStackTrace();
+        } catch (IOException e) {
+            e.printStackTrace();
+        }
     }
 
     public void logsEvent(String[] messages, MessageReceivedEvent event) {
