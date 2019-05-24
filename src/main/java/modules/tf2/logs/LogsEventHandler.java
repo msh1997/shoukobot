@@ -102,7 +102,7 @@ public class LogsEventHandler {
         }
     }
 
-    private void addTrackedUser(String[] messages, MessageReceivedEvent event){
+    private void addTrackedUser(String[] messages, MessageReceivedEvent event) throws IOException, ParseException {
 
         LogsUser user = new LogsUser(messages[3], messages[2]);
 
@@ -110,6 +110,12 @@ public class LogsEventHandler {
             event.getChannel().sendMessage("That Steam ID already exists.").queue();
         }
         else {
+            // TODO: make this work
+            if(!logsApiService.checkId(user.getSteamId())) {
+                event.getChannel().sendMessage("That Steam ID is invalid.").queue();
+                return;
+            }
+
             logsUserList.add(user);
 
             try (FileWriter file = new FileWriter("resources/LogsUsers.json")) {

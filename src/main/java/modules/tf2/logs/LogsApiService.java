@@ -24,6 +24,15 @@ public class LogsApiService {
 
     }
 
+    // TODO: make this work
+    public boolean checkId(String ID) throws IOException, ParseException {
+        String path = "http://logs.tf/api/v1/log?player=" + ID + "&limit=0";
+        JSONObject response = HttpRequests.getHttpResponse(path, new HashMap<>());
+        boolean success = (boolean) response.get("success");
+
+        return success;
+    }
+
     public List<Logs> getLogsByUser(LogsUser logsUser, int limit) throws IOException, ParseException {
         String path = "http://logs.tf/api/v1/log?player=" + logsUser.getSteamId() + "&limit=" + limit;
         JSONObject response = HttpRequests.getHttpResponse(path, new HashMap<>());
