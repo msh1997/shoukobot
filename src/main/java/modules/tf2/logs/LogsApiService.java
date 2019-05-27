@@ -9,7 +9,6 @@ import org.json.simple.parser.ParseException;
 import services.HttpRequests;
 
 import java.io.IOException;
-import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.List;
 
@@ -28,9 +27,7 @@ public class LogsApiService {
     public boolean checkId(String ID) throws IOException, ParseException {
         String path = "http://logs.tf/api/v1/log?player=" + ID + "&limit=0";
         JSONObject response = HttpRequests.getHttpResponse(path, new HashMap<>());
-        boolean success = (boolean) response.get("success");
-
-        return success;
+        return (boolean)response.get("success") && !(((Long) response.get("results")) == 0 && ((Long)response.get("total") == 0));
     }
 
     public List<Logs> getLogsByUser(LogsUser logsUser, int limit) throws IOException, ParseException {
