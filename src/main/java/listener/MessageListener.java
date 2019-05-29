@@ -5,6 +5,7 @@ import modules.tf2.logs.LogsEventHandler;
 import modules.tf2.ConnectStringParser;
 import modules.misc.MiscEventHandler;
 import modules.osu.OsuEventHandler;
+import modules.help.HelpEventHandler;
 import org.json.simple.parser.ParseException;
 import services.MessageParser;
 import net.dv8tion.jda.core.events.message.MessageReceivedEvent;
@@ -21,14 +22,16 @@ public class MessageListener extends ListenerAdapter {
     private CustomEventHandler customEventHandler;
     private MiscEventHandler miscEventHandler;
     private LogsEventHandler logsEventHandler;
+    private HelpEventHandler helpEventHandler;
 
 
-    public MessageListener(String prefix){
+    public MessageListener(String prefix) {
         this.prefix = prefix;
         osuEventHandler = new OsuEventHandler();
         customEventHandler = new CustomEventHandler();
         miscEventHandler = new MiscEventHandler();
         logsEventHandler = new LogsEventHandler();
+        helpEventHandler = new HelpEventHandler();
     }
 
     public OsuEventHandler getOsuEventHandler() {
@@ -39,27 +42,35 @@ public class MessageListener extends ListenerAdapter {
         this.osuEventHandler = osuEventHandler;
     }
 
-    public CustomEventHandler getCustomEventHandler() { return customEventHandler; }
+    public CustomEventHandler getCustomEventHandler() {
+        return customEventHandler;
+    }
 
-    public void setCustomEventHandler(CustomEventHandler customEventHandler) { this.customEventHandler = customEventHandler; }
+    public void setCustomEventHandler(CustomEventHandler customEventHandler) {
+        this.customEventHandler = customEventHandler;
+    }
 
-    public LogsEventHandler getLogsEventHandler() { return logsEventHandler; }
+    public LogsEventHandler getLogsEventHandler() {
+        return logsEventHandler;
+    }
 
-    public void setLogsEventHandler(LogsEventHandler logsEventHandler) {this.logsEventHandler = logsEventHandler;}
+    public void setLogsEventHandler(LogsEventHandler logsEventHandler) {
+        this.logsEventHandler = logsEventHandler;
+    }
 
     @Override
-    public void onMessageReceived(MessageReceivedEvent event){
+    public void onMessageReceived(MessageReceivedEvent event) {
 
-        if(event.getAuthor().isBot()) return;
+        if (event.getAuthor().isBot()) return;
 
         System.out.println("Received a message from " + event.getAuthor().getName() + ": " + event.getMessage().getContentDisplay());
         String[] messages = messageParser.parseMessage(event.getMessage().getContentRaw());
 
-        if(customEventHandler.containsCustomEvent(event.getMessage().getContentRaw())){
+        if (customEventHandler.containsCustomEvent(event.getMessage().getContentRaw())) {
             customEventHandler.customEvent(event.getMessage().getContentRaw(), event);
         }
 
-        if(!messages[0].startsWith(this.prefix)) {
+        if (!messages[0].startsWith(this.prefix)) {
             if (messages[0].equals("connect")) {
                 connectStringParser.connectString(messages, event);
             }
@@ -67,7 +78,7 @@ public class MessageListener extends ListenerAdapter {
         }
 
         messages[0] = messages[0].substring(this.prefix.length());
-        switch(messages[0]){
+        switch (messages[0]) {
             case "osu":
                 osuEventHandler.osuEvent(messages, event);
                 break;
@@ -83,6 +94,8 @@ public class MessageListener extends ListenerAdapter {
                     e.printStackTrace();
                 }
                 break;
+            case "help":
+                helpEventHandler.helpEvent(messages, event);
             default:
                 miscEventHandler.miscEvent(messages, event);
                 break;

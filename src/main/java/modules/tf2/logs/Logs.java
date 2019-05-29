@@ -28,4 +28,12 @@ public class Logs {
     }
 
     public String getLogTitle() { return logTitle; }
+
+    public String getMapName() { return mapName; }
+
+    public int getViewCount() { return viewCount; }
+
+    public int getPlayerCount() { return playerCount; }
+
+    public Date getDate() { return date; }
 }

@@ -16,16 +16,15 @@ public class OsuEventHandler {
 
     private List<String> osuUsersList = new ArrayList<>();
 
-    public OsuEventHandler(){
+    public OsuEventHandler() {
         JSONParser jsonParser = new JSONParser();
-        try (FileReader reader = new FileReader("resources/OsuUsers.json"))
-        {
+        try (FileReader reader = new FileReader("resources/OsuUsers.json")) {
             //Read JSON file
-            JSONObject obj = (JSONObject)jsonParser.parse(reader);
+            JSONObject obj = (JSONObject) jsonParser.parse(reader);
 
-            JSONArray usersJsonArray = (JSONArray)(obj.get("users"));
+            JSONArray usersJsonArray = (JSONArray) (obj.get("users"));
 
-            usersJsonArray.forEach( user -> osuUsersList.add((String)user));
+            usersJsonArray.forEach(user -> osuUsersList.add((String) user));
 
         } catch (IOException | ParseException e) {
             e.printStackTrace();
@@ -33,15 +32,15 @@ public class OsuEventHandler {
 
     }
 
-    public void addUserToTracking(String[] messages, MessageReceivedEvent event){
+    public void addUserToTracking(String[] messages, MessageReceivedEvent event) {
 
         String username = "";
 
-        for(int i = 2; i < messages.length; i++){
+        for (int i = 2; i < messages.length; i++) {
             username += messages[i];
         }
 
-        if(osuUsersList.contains(username)){
+        if (osuUsersList.contains(username)) {
             event.getChannel().sendMessage("User is already being tracked").queue();
             return;
         }
@@ -51,15 +50,15 @@ public class OsuEventHandler {
     }
 
 
-    public void removeTrackedUser(String[] messages, MessageReceivedEvent event){
+    public void removeTrackedUser(String[] messages, MessageReceivedEvent event) {
         String username = "";
 
-        for(int i = 2; i < messages.length; i++){
+        for (int i = 2; i < messages.length; i++) {
             username += messages[i];
         }
 
-        for(String user : osuUsersList){
-            if(user.equals(username)){
+        for (String user : osuUsersList) {
+            if (user.equals(username)) {
                 osuUsersList.remove(user);
                 writeTrackedUsersJson();
                 event.getChannel().sendMessage("User " + username + " removed from tracking list").queue();
@@ -69,25 +68,24 @@ public class OsuEventHandler {
         event.getChannel().sendMessage("User " + username + " not found").queue();
     }
 
-    public void listTrackedUsers(String[] messages, MessageReceivedEvent event){
+    public void listTrackedUsers(String[] messages, MessageReceivedEvent event) {
 
         StringBuilder message = new StringBuilder();
-        for(String user : osuUsersList){
+        for (String user : osuUsersList) {
             message.append(user).append("\n");
         }
 
-        if(message.toString().equals("")){
+        if (message.toString().equals("")) {
             event.getChannel().sendMessage("No tracked users").queue();
-        }
-        else{
+        } else {
             event.getChannel().sendMessage(message.toString()).queue();
         }
     }
 
-    public void writeTrackedUsersJson(){
+    public void writeTrackedUsersJson() {
         JSONObject usersJson = new JSONObject();
         JSONArray usersJsonArray = new JSONArray();
-        for(String user : osuUsersList){
+        for (String user : osuUsersList) {
             usersJsonArray.add(user);
         }
         usersJson.put("users", usersJsonArray);
@@ -101,14 +99,12 @@ public class OsuEventHandler {
         }
     }
 
-    public void osuEvent(String[] messages, MessageReceivedEvent event){
-        if(messages[1].equals("add")){
+    public void osuEvent(String[] messages, MessageReceivedEvent event) {
+        if (messages[1].equals("add")) {
             addUserToTracking(messages, event);
-        }
-        else if(messages[1].equals("list")){
+        } else if (messages[1].equals("list")) {
             listTrackedUsers(messages, event);
-        }
-        else if(messages[1].equals("remove")){
+        } else if (messages[1].equals("remove")) {
             removeTrackedUser(messages, event);
         }
     }

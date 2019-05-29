@@ -22,7 +22,8 @@ public class LogsEventHandler {
 
     public LogsEventHandler() {
         try (FileReader reader = new FileReader("resources/LogsUsers.json")) {
-            logsUserList = objectMapper.readValue(reader, new TypeReference<List<LogsUser>>(){});
+            logsUserList = objectMapper.readValue(reader, new TypeReference<List<LogsUser>>() {
+            });
 
             System.out.println(logsUserList);
 
@@ -51,7 +52,7 @@ public class LogsEventHandler {
     private void listTrackedUsers(MessageReceivedEvent event) {
         String users = "";
         String ids = "";
-        for(LogsUser user : logsUserList) {
+        for (LogsUser user : logsUserList) {
             users += user.getUsername() + "\n";
             ids += user.getSteamId() + "\n";
         }
@@ -68,22 +69,21 @@ public class LogsEventHandler {
     }
 
     private void getTrackedUser(String[] messages, MessageReceivedEvent event) throws IOException, ParseException {
-        if(containsName(messages[2])) {
+        if (containsName(messages[2])) {
             LogsUser user = null;
-            for(LogsUser tempUser : logsUserList){
-                if(tempUser.getUsername().equals(messages[2])){
+            for (LogsUser tempUser : logsUserList) {
+                if (tempUser.getUsername().equals(messages[2])) {
                     user = tempUser;
                     break;
                 }
             }
 
             int limit = 3;
-            if(messages.length > 3) {
+            if (messages.length > 3) {
                 int num = Integer.parseInt(messages[3]);
-                if(num >= 1 && num <= 10 ) {
+                if (num >= 1 && num <= 10) {
                     limit = num;
-                }
-                else {
+                } else {
                     event.getChannel().sendMessage("Please enter a number from 1-10.\nDefaulting to 3.").queue();
                 }
             }
@@ -92,7 +92,7 @@ public class LogsEventHandler {
 
             String logString = "";
             String titleString = "";
-            for(Logs logs : logsList){
+            for (Logs logs : logsList) {
                 logString += "<http://logs.tf/" + logs.getId() + ">\n";
                 titleString += logs.getLogTitle() + "\n";
             }
@@ -107,8 +107,7 @@ public class LogsEventHandler {
             mb.setEmbed(eb.build());
 
             event.getChannel().sendMessage(mb.build()).queue();
-        }
-        else {
+        } else {
             event.getChannel().sendMessage("That user is not being tracked.").queue();
         }
     }
@@ -117,12 +116,11 @@ public class LogsEventHandler {
 
         LogsUser user = new LogsUser(messages[3], messages[2]);
 
-        if(containsId(messages[3])) {
+        if (containsId(messages[3])) {
             event.getChannel().sendMessage("That Steam ID already exists.").queue();
-        }
-        else {
+        } else {
             // TODO: make this work
-            if(!logsApiService.checkId(user.getSteamId())) {
+            if (!logsApiService.checkId(user.getSteamId())) {
                 event.getChannel().sendMessage("That Steam ID is invalid.").queue();
                 return;
             }
@@ -131,7 +129,7 @@ public class LogsEventHandler {
 
             try (FileWriter file = new FileWriter("resources/LogsUsers.json")) {
                 objectMapper.writeValue(file, logsUserList);
-                event.getChannel().sendMessage("User \"" + messages[2] + "\" with SteamID64: [" + messages[3] +  "] successfully added").queue();
+                event.getChannel().sendMessage("User \"" + messages[2] + "\" with SteamID64: [" + messages[3] + "] successfully added").queue();
             } catch (IOException e) {
                 e.printStackTrace();
             }
@@ -139,7 +137,7 @@ public class LogsEventHandler {
     }
 
     private void removeTrackedUser(String[] messages, MessageReceivedEvent event) {
-        if(containsName(messages[2]) || containsId(messages[2])) {
+        if (containsName(messages[2]) || containsId(messages[2])) {
             String name = "";
             String ID = "";
             for (Iterator<LogsUser> iter = logsUserList.listIterator(); iter.hasNext(); ) {
@@ -157,17 +155,16 @@ public class LogsEventHandler {
             } catch (IOException e) {
                 e.printStackTrace();
             }
-        }
-        else {
+        } else {
             event.getChannel().sendMessage("User and/or steamID is not being tracked.").queue();
         }
     }
 
-    private boolean containsName(final String name){
+    private boolean containsName(final String name) {
         return logsUserList.stream().map(LogsUser::getUsername).anyMatch(name::equals);
     }
 
-    private boolean containsId(final String ID){
+    private boolean containsId(final String ID) {
         return logsUserList.stream().map(LogsUser::getSteamId).anyMatch(ID::equals);
     }
 }

@@ -14,7 +14,7 @@ public class ConnectStringParser {
         Matcher m = connectString.matcher(content);
         if (m.matches()) {
             String info;
-            String password = messages[messages.length-1];
+            String password = messages[messages.length - 1];
             if (messages.length == 2) {
                 info = "steam://" + messages[0] + "/" + messages[1];
             } else if (messages.length == 3) {

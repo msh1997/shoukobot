@@ -4,7 +4,7 @@ public class OsuApiService {
 
     public static String apiKey;
 
-    public static OsuUser getUser(String username){
+    public static OsuUser getUser(String username) {
         return new OsuUser(username);
     }
 }

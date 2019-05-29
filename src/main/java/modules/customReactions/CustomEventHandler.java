@@ -11,7 +11,6 @@ import java.awt.*;
 import java.io.FileReader;
 import java.io.FileWriter;
 import java.io.IOException;
-import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.Map;
 import java.util.regex.Matcher;
@@ -23,27 +22,26 @@ public class CustomEventHandler {
 
     public CustomEventHandler() {
         JSONParser jsonParser = new JSONParser();
-        try (FileReader reader = new FileReader("resources/CustomCommands.json"))
-        {
+        try (FileReader reader = new FileReader("resources/CustomCommands.json")) {
             //Read JSON file
-            JSONObject obj = (JSONObject)jsonParser.parse(reader);
-            commandMap = (HashMap)obj;
+            JSONObject obj = (JSONObject) jsonParser.parse(reader);
+            commandMap = (HashMap) obj;
         } catch (IOException | ParseException e) {
             e.printStackTrace();
         }
     }
 
-    public boolean containsCustomEvent(String customEvent){
+    public boolean containsCustomEvent(String customEvent) {
         return commandMap.containsKey(customEvent);
     }
 
-    public void customEvent(String message, MessageReceivedEvent event){
+    public void customEvent(String message, MessageReceivedEvent event) {
 
         String reaction = commandMap.get(message);
         Pattern imageLink = Pattern.compile("(.*)(https://)(.*)(.jpg|.jpeg|.png|.gif)(.*)");
         Matcher m = imageLink.matcher(reaction);
 
-        if(m.matches()) {
+        if (m.matches()) {
 
             String url = "";
             String msg = "";
@@ -51,10 +49,9 @@ public class CustomEventHandler {
             String[] messages = reaction.split(" ");
 
             for (String part : messages) {
-                if(part.startsWith("https://")){
+                if (part.startsWith("https://")) {
                     url = part;
-                }
-                else {
+                } else {
                     msg += part + " ";
                 }
             }
@@ -65,18 +62,17 @@ public class CustomEventHandler {
             Color green = new Color(0, 255, 0);
             eb.setColor(green);
 
-            if(msg.length() > 0) eb.setTitle(msg);
+            if (msg.length() > 0) eb.setTitle(msg);
 
             eb.setImage(url);
             mb.setEmbed(eb.build());
 
             event.getChannel().sendMessage(mb.build()).queue();
-        }
-        else
+        } else
             event.getChannel().sendMessage(reaction).queue();
     }
 
-    public void listCustomCommands(MessageReceivedEvent event){
+    public void listCustomCommands(MessageReceivedEvent event) {
         StringBuilder strBuilder = new StringBuilder();
         for (Map.Entry<String, String> entry : commandMap.entrySet()) {
             String key = entry.getKey();
@@ -96,15 +92,14 @@ public class CustomEventHandler {
         event.getChannel().sendMessage(mb.build()).queue();
     }
 
-    public void addCustomCommand(String msg, MessageReceivedEvent event){
-        if(containsCustomEvent(msg)) {
+    public void addCustomCommand(String msg, MessageReceivedEvent event) {
+        if (containsCustomEvent(msg)) {
             event.getChannel().sendMessage("That reaction already exists.").queue();
-        }
-        else {
-            String [] splitMsg = msg.split("\"");
+        } else {
+            String[] splitMsg = msg.split("\"");
             commandMap.put(splitMsg[1], splitMsg[2].substring(1));
 
-            JSONObject obj = (JSONObject)commandMap;
+            JSONObject obj = (JSONObject) commandMap;
             try (FileWriter file = new FileWriter("resources/CustomCommands.json")) {
 
                 file.write(obj.toJSONString());
@@ -117,12 +112,12 @@ public class CustomEventHandler {
         }
     }
 
-    public void deleteCustomCommand(String msg, MessageReceivedEvent event){
+    public void deleteCustomCommand(String msg, MessageReceivedEvent event) {
         int idx = msg.indexOf("delete");
         String substr = msg.substring(idx + "delete".length() + 1);
         String result = commandMap.remove(substr);
 
-        JSONObject obj = (JSONObject)commandMap;
+        JSONObject obj = (JSONObject) commandMap;
         try (FileWriter file = new FileWriter("resources/CustomCommands.json")) {
 
             file.write(obj.toJSONString());
@@ -132,13 +127,13 @@ public class CustomEventHandler {
             e.printStackTrace();
         }
 
-        if(result == null)
+        if (result == null)
             event.getChannel().sendMessage("Reaction did not exist.").queue();
         else
             event.getChannel().sendMessage("Reaction successfully deleted.").queue();
     }
 
-    public void customCommandEvent(String [] messages, String msg, MessageReceivedEvent event) {
+    public void customCommandEvent(String[] messages, String msg, MessageReceivedEvent event) {
         switch (messages[1]) {
             case "list":
                 listCustomCommands(event);

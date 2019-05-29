@@ -18,7 +18,7 @@ public class LogsApiService {
     private ObjectMapper objectMapper;
     private JSONParser parser;
 
-    public LogsApiService(){
+    public LogsApiService() {
         objectMapper = new ObjectMapper();
 
     }
@@ -27,7 +27,7 @@ public class LogsApiService {
     public boolean checkId(String ID) throws IOException, ParseException {
         String path = "http://logs.tf/api/v1/log?player=" + ID + "&limit=0";
         JSONObject response = HttpRequests.getHttpResponse(path, new HashMap<>());
-        return (boolean)response.get("success") && !(((Long) response.get("results")) == 0 && ((Long)response.get("total") == 0));
+        return (boolean) response.get("success") && !(((Long) response.get("results")) == 0 && ((Long) response.get("total") == 0));
     }
 
     public List<Logs> getLogsByUser(LogsUser logsUser, int limit) throws IOException, ParseException {
@@ -35,7 +35,8 @@ public class LogsApiService {
         JSONObject response = HttpRequests.getHttpResponse(path, new HashMap<>());
         JSONArray logsListJson = (JSONArray) response.get("logs");
         String logsListJsonString = logsListJson.toJSONString();
-        List<Logs> logsList = objectMapper.readValue(logsListJsonString, new TypeReference<List<Logs>>(){});
+        List<Logs> logsList = objectMapper.readValue(logsListJsonString, new TypeReference<List<Logs>>() {
+        });
 
         return logsList;
     }
