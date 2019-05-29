@@ -77,7 +77,18 @@ public class LogsEventHandler {
                 }
             }
 
-            List<Logs> logsList = logsApiService.getLogsByUser(user, 3);
+            int limit = 3;
+            if(messages.length > 3) {
+                int num = Integer.parseInt(messages[3]);
+                if(num >= 1 && num <= 10 ) {
+                    limit = num;
+                }
+                else {
+                    event.getChannel().sendMessage("Please enter a number from 1-10.\nDefaulting to 3.").queue();
+                }
+            }
+
+            List<Logs> logsList = logsApiService.getLogsByUser(user, limit);
 
             String logString = "";
             String titleString = "";

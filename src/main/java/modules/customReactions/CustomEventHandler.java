@@ -11,8 +11,11 @@ import java.awt.*;
 import java.io.FileReader;
 import java.io.FileWriter;
 import java.io.IOException;
+import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.Map;
+import java.util.regex.Matcher;
+import java.util.regex.Pattern;
 
 public class CustomEventHandler {
 
@@ -35,7 +38,50 @@ public class CustomEventHandler {
     }
 
     public void customEvent(String message, MessageReceivedEvent event){
-        event.getChannel().sendMessage(commandMap.get(message)).queue();
+
+        String reaction = commandMap.get(message);
+        Pattern imageLink = Pattern.compile("(.*)(https://)(.*)(.jpg|.jpeg|.png|.gif)(.*)");
+        Matcher m = imageLink.matcher(reaction);
+
+        if(m.matches()) {
+
+            String url = "";
+
+            String[] messages = reaction.split(" ");
+            ArrayList<String> tempMessages = new ArrayList<>();
+
+            for (String part : messages) {
+                if(part.startsWith("https://")){
+                    url = part;
+                }
+                else {
+                    tempMessages.add(part);
+                }
+            }
+
+            messages = tempMessages.toArray(new String[tempMessages.size()]);
+
+            StringBuilder strBuilder = new StringBuilder();
+            for (String part : messages) {
+                strBuilder.append(part + " ");
+            }
+            String msg = strBuilder.toString();
+
+            EmbedBuilder eb = new EmbedBuilder();
+            MessageBuilder mb = new MessageBuilder();
+
+            Color green = new Color(0, 255, 0);
+            eb.setColor(green);
+
+            if(msg.length() > 0) eb.setTitle(msg);
+
+            eb.setImage(url);
+            mb.setEmbed(eb.build());
+
+            event.getChannel().sendMessage(mb.build()).queue();
+        }
+        else
+            event.getChannel().sendMessage(commandMap.get(message)).queue();
     }
 
     public void listCustomCommands(MessageReceivedEvent event){
