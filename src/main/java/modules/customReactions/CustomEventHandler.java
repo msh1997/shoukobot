@@ -46,26 +46,18 @@ public class CustomEventHandler {
         if(m.matches()) {
 
             String url = "";
+            String msg = "";
 
             String[] messages = reaction.split(" ");
-            ArrayList<String> tempMessages = new ArrayList<>();
 
             for (String part : messages) {
                 if(part.startsWith("https://")){
                     url = part;
                 }
                 else {
-                    tempMessages.add(part);
+                    msg += part + " ";
                 }
             }
-
-            messages = tempMessages.toArray(new String[tempMessages.size()]);
-
-            StringBuilder strBuilder = new StringBuilder();
-            for (String part : messages) {
-                strBuilder.append(part + " ");
-            }
-            String msg = strBuilder.toString();
 
             EmbedBuilder eb = new EmbedBuilder();
             MessageBuilder mb = new MessageBuilder();
@@ -81,7 +73,7 @@ public class CustomEventHandler {
             event.getChannel().sendMessage(mb.build()).queue();
         }
         else
-            event.getChannel().sendMessage(commandMap.get(message)).queue();
+            event.getChannel().sendMessage(reaction).queue();
     }
 
     public void listCustomCommands(MessageReceivedEvent event){
