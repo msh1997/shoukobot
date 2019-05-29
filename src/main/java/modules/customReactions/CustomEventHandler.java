@@ -16,6 +16,8 @@ import java.util.Map;
 import java.util.regex.Matcher;
 import java.util.regex.Pattern;
 
+import static services.Embeds.sendEmbed;
+
 public class CustomEventHandler {
 
     private HashMap<String, String> commandMap = new HashMap<>();
@@ -81,15 +83,9 @@ public class CustomEventHandler {
         }
         String reactionList = strBuilder.toString();
 
-        EmbedBuilder eb = new EmbedBuilder();
-        MessageBuilder mb = new MessageBuilder();
+        String name = "Custom Reaction List:";
 
-        Color green = new Color(0, 255, 0);
-        eb.setColor(green);
-        eb.addField("Custom Reaction List:", reactionList, true);
-        mb.setEmbed(eb.build());
-
-        event.getChannel().sendMessage(mb.build()).queue();
+        sendEmbed(name, reactionList, event);
     }
 
     public void addCustomCommand(String msg, MessageReceivedEvent event) {
