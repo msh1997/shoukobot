@@ -96,6 +96,7 @@ public class MessageListener extends ListenerAdapter {
                 break;
             case "help":
                 helpEventHandler.helpEvent(messages, event);
+                break;
             default:
                 miscEventHandler.miscEvent(messages, event);
                 break;
