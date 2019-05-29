@@ -1,8 +1,7 @@
 package modules.customReactions;
 
-import net.dv8tion.jda.core.EmbedBuilder;
-import net.dv8tion.jda.core.MessageBuilder;
 import net.dv8tion.jda.core.events.message.MessageReceivedEvent;
+import net.dv8tion.jda.core.entities.MessageEmbed.Field;
 import org.json.simple.JSONObject;
 import org.json.simple.parser.JSONParser;
 import org.json.simple.parser.ParseException;
@@ -58,18 +57,7 @@ public class CustomEventHandler {
                 }
             }
 
-            EmbedBuilder eb = new EmbedBuilder();
-            MessageBuilder mb = new MessageBuilder();
-
-            Color green = new Color(0, 255, 0);
-            eb.setColor(green);
-
-            if (msg.length() > 0) eb.setTitle(msg);
-
-            eb.setImage(url);
-            mb.setEmbed(eb.build());
-
-            event.getChannel().sendMessage(mb.build()).queue();
+            sendEmbed(msg, url, null, new Color(0, 255, 0), event);
         } else
             event.getChannel().sendMessage(reaction).queue();
     }
@@ -83,9 +71,8 @@ public class CustomEventHandler {
         }
         String reactionList = strBuilder.toString();
 
-        String name = "Custom Reaction List:";
-
-        sendEmbed(name, reactionList, event);
+        Field field = new Field("Custom Reaction List:", reactionList, true);
+        sendEmbed(field, new Color(0, 255, 0), event);
     }
 
     public void addCustomCommand(String msg, MessageReceivedEvent event) {

@@ -1,6 +1,9 @@
 package modules.help;
 
 import net.dv8tion.jda.core.events.message.MessageReceivedEvent;
+import net.dv8tion.jda.core.entities.MessageEmbed.Field;
+
+import java.awt.*;
 
 import static services.Embeds.sendEmbed;
 
@@ -10,11 +13,11 @@ public class HelpEventHandler {
         if(messages.length < 3) {
             String name = "Available Commands in Reactions Module";
             String value = "add\ndelete\nlist\n\n" +
-                    "For further information about a specific command," +
-                    "\nappend the command name\n" +
+                    "For further information about a specific command,\n" +
+                    "append the command name\n" +
                     "Ex: r.help reactions add";
-
-            sendEmbed(name, value, event);
+            Field field = new Field(name, value, true);
+            sendEmbed(field, new Color(0, 255, 0), event);
             return;
         }
 
@@ -29,14 +32,15 @@ public class HelpEventHandler {
                 break;
             case "delete":
                 name = "r.reactions delete [Reaction Trigger]";
-                value = "Deletes a reaction from the list of custom reactions.\n";
+                value = "Deletes a reaction from the list of custom reactions.";
                 break;
             case "list":
                 name = "r.reactions list";
                 value = "Lists all available custom reactions.";
                 break;
         }
-        sendEmbed(name, value, event);
+        Field field = new Field(name, value, true);
+        sendEmbed(field, new Color(0, 255, 0), event);
     }
 
     public void osuHelp(String[] messages, MessageReceivedEvent event) {
@@ -54,11 +58,12 @@ public class HelpEventHandler {
     public void helpEvent(String[] messages, MessageReceivedEvent event) {
         if (messages.length < 2) {
             String name = "Modules List:";
-            String value = "reactions\nosu\ntf2\nmisc\n\nFor information about a specific module,\n" +
+            String value = "reactions\nosu\ntf2\nmisc\n\n" +
+                    "For information about a specific module,\n" +
                     "append the module name\n" +
                     "Ex: r.help reactions";
-
-            sendEmbed(name, value, event);
+            Field field = new Field(name, value, true);
+            sendEmbed(field, new Color(0, 255, 0), event);
             return;
         }
 

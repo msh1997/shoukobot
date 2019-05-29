@@ -2,9 +2,9 @@ package modules.tf2.logs;
 
 import com.fasterxml.jackson.core.type.TypeReference;
 import com.fasterxml.jackson.databind.ObjectMapper;
-import net.dv8tion.jda.core.EmbedBuilder;
-import net.dv8tion.jda.core.MessageBuilder;
+import net.dv8tion.jda.core.entities.MessageEmbed;
 import net.dv8tion.jda.core.events.message.MessageReceivedEvent;
+import net.dv8tion.jda.core.entities.MessageEmbed.Field;
 import org.json.simple.parser.ParseException;
 
 import java.awt.*;
@@ -13,6 +13,8 @@ import java.io.FileWriter;
 import java.io.IOException;
 import java.util.*;
 import java.util.List;
+
+import static services.Embeds.sendEmbed;
 
 public class LogsEventHandler {
 
@@ -56,16 +58,14 @@ public class LogsEventHandler {
             users += user.getUsername() + "\n";
             ids += user.getSteamId() + "\n";
         }
-        EmbedBuilder eb = new EmbedBuilder();
-        MessageBuilder mb = new MessageBuilder();
 
-        Color green = new Color(0, 255, 0);
-        eb.setColor(green);
-        eb.addField("Currently Tracked Users:", users, true);
-        eb.addField("", ids, true);
-        mb.setEmbed(eb.build());
+        MessageEmbed.Field field1 = new MessageEmbed.Field("Currently Tracked Users:", users, true);
+        MessageEmbed.Field field2 = new MessageEmbed.Field("", ids, true);
+        ArrayList<MessageEmbed.Field> fieldList = new ArrayList<>();
+        fieldList.add(field1);
+        fieldList.add(field2);
 
-        event.getChannel().sendMessage(mb.build()).queue();
+        sendEmbed(fieldList, new Color(0, 255, 0), event);
     }
 
     private void getTrackedUser(String[] messages, MessageReceivedEvent event) throws IOException, ParseException {
@@ -101,16 +101,13 @@ public class LogsEventHandler {
                 titleString += logs.getLogTitle() + "\n";
             }
 
-            EmbedBuilder eb = new EmbedBuilder();
-            MessageBuilder mb = new MessageBuilder();
+            Field field1 = new Field("Most recent logs for " + user.getUsername() + ":", logString,true);
+            Field field2 = new Field("", titleString, true);
+            ArrayList<Field> fieldList = new ArrayList<>();
+            fieldList.add(field1);
+            fieldList.add(field2);
 
-            Color green = new Color(0, 255, 0);
-            eb.setColor(green);
-            eb.addField("Most recent logs for " + user.getUsername() + ":", logString, true);
-            eb.addField("", titleString, true);
-            mb.setEmbed(eb.build());
-
-            event.getChannel().sendMessage(mb.build()).queue();
+            sendEmbed(fieldList, new Color(0, 255, 0), event);
         } else {
             event.getChannel().sendMessage("That user is not being tracked.").queue();
         }
