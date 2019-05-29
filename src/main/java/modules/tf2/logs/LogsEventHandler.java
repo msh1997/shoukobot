@@ -79,11 +79,15 @@ public class LogsEventHandler {
             }
 
             int limit = 3;
-            if (messages.length > 3) {
-                int num = Integer.parseInt(messages[3]);
-                if (num >= 1 && num <= 10) {
-                    limit = num;
-                } else {
+            if (messages.length == 4) {
+                try {
+                    int num = Integer.parseInt(messages[3]);
+                    if (num >= 1 && num <= 10) {
+                        limit = num;
+                    } else {
+                        event.getChannel().sendMessage("Please enter a number from 1-10.\nDefaulting to 3.").queue();
+                    }
+                }catch (NumberFormatException e){
                     event.getChannel().sendMessage("Please enter a number from 1-10.\nDefaulting to 3.").queue();
                 }
             }
@@ -114,6 +118,10 @@ public class LogsEventHandler {
 
     private void addTrackedUser(String[] messages, MessageReceivedEvent event) throws IOException, ParseException {
 
+        if(messages.length < 4){
+            event.getChannel().sendMessage("Please enter a Steam ID").queue();
+            return;
+        }
         LogsUser user = new LogsUser(messages[3], messages[2]);
 
         if (containsId(messages[3])) {
