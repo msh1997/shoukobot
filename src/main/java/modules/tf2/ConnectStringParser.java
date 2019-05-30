@@ -10,7 +10,7 @@ public class ConnectStringParser {
     public void connectString(String[] messages, MessageReceivedEvent event) {
         String content = event.getMessage().getContentRaw();
         content = content.replaceFirst("https://", "");
-        Pattern connectString = Pattern.compile("(connect) (([a-zA-Z0-9]|\\.)+)(:[0-9])*+(\\;\\s*(password) (.)+)*");
+        Pattern connectString = Pattern.compile("(connect) (([a-zA-Z0-9]|\\.)+)(:)*([0-9])*+(\\;\\s*(password) (.)+)*");
         Matcher m = connectString.matcher(content);
         if (m.matches()) {
             String info;
