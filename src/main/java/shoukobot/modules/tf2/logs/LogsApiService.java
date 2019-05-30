@@ -6,7 +6,7 @@ import org.json.simple.JSONArray;
 import org.json.simple.JSONObject;
 import org.json.simple.parser.JSONParser;
 import org.json.simple.parser.ParseException;
-import services.HttpRequests;
+import shoukobot.services.HttpRequests;
 
 import java.io.IOException;
 import java.util.HashMap;

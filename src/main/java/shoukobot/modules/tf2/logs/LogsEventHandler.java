@@ -14,7 +14,7 @@ import java.io.IOException;
 import java.util.*;
 import java.util.List;
 
-import static services.Embeds.sendEmbed;
+import static shoukobot.services.Embeds.sendEmbed;
 
 public class LogsEventHandler {
 

@@ -1,4 +1,4 @@
-package services;
+package shoukobot.services;
 
 import java.util.ArrayList;
 

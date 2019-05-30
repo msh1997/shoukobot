@@ -9,7 +9,7 @@ import modules.misc.MiscEventHandler;
 import modules.osu.OsuEventHandler;
 import modules.help.HelpEventHandler;
 import org.json.simple.parser.ParseException;
-import services.MessageParser;
+import shoukobot.services.MessageParser;
 import net.dv8tion.jda.core.events.message.MessageReceivedEvent;
 import net.dv8tion.jda.core.hooks.ListenerAdapter;
 

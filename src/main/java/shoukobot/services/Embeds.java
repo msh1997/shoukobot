@@ -1,4 +1,4 @@
-package services;
+package shoukobot.services;
 
 import net.dv8tion.jda.core.EmbedBuilder;
 import net.dv8tion.jda.core.MessageBuilder;

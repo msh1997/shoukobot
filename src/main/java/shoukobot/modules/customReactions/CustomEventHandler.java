@@ -15,7 +15,7 @@ import java.util.Map;
 import java.util.regex.Matcher;
 import java.util.regex.Pattern;
 
-import static services.Embeds.sendEmbed;
+import static shoukobot.services.Embeds.sendEmbed;
 
 public class CustomEventHandler {
 

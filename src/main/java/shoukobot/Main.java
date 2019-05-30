@@ -1,3 +1,5 @@
+package shoukobot;
+
 import listener.MessageListener;
 import modules.osu.OsuApiService;
 import net.dv8tion.jda.core.AccountType;
@@ -10,13 +12,14 @@ import java.util.Properties;
 
 public class Main {
 
-    public String token;
-    public String prefix = "";
-    public String osuApiKey = "";
+    private String token;
+    private String prefix = "";
+    private String osuApiKey = "";
+    public static JDABuilder builder;
 
     public Main() throws IOException, LoginException {
         setProperties();
-        JDABuilder builder = new JDABuilder(AccountType.BOT);
+        this.builder = new JDABuilder(AccountType.BOT);
         builder.setToken(token);
         MessageListener listener = new MessageListener(prefix);
         OsuApiService.apiKey = osuApiKey;

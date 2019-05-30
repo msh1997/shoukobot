@@ -5,7 +5,7 @@ import net.dv8tion.jda.core.entities.MessageEmbed.Field;
 
 import java.awt.*;
 
-import static services.Embeds.sendEmbed;
+import static shoukobot.services.Embeds.sendEmbed;
 
 public class HelpEventHandler {
 

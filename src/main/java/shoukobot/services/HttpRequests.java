@@ -1,4 +1,4 @@
-package services;
+package shoukobot.services;
 
 import org.apache.http.Consts;
 import org.apache.http.HttpResponse;
