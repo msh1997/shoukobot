@@ -13,7 +13,6 @@ public class CalculatorEventHandler {
         sum = Float.parseFloat(num1) + Float.parseFloat(num2);
         return String.format("%.2f", sum);
     }
-
     public String subtraction(String num1, String num2){
         float diff;
         diff = Float.parseFloat(num1) - Float.parseFloat(num2);
@@ -31,21 +30,31 @@ public class CalculatorEventHandler {
     }
 
     public void calcEvent(String[] messages, MessageReceivedEvent event) {
-        switch (messages[1]) {
-            case "add":
-                event.getChannel().sendMessage(addition(messages[2], messages[3])).queue();
-                break;
-            case "sub":
-                event.getChannel().sendMessage(subtraction(messages[2], messages[3])).queue();
-                break;
-            case "mult":
-                event.getChannel().sendMessage(multiplication(messages[2], messages[3])).queue();
-                break;
-            case "div":
-                event.getChannel().sendMessage(division(messages[2], messages[3])).queue();
-                break;
-            default:
-                event.getChannel().sendMessage("no operation detected").queue();
+        if (messages.length < 4) {
+            event.getChannel().sendMessage("Invalid Operands.").queue();
+            return;
+        }
+
+        try {
+            switch (messages[1]) {
+                case "add":
+                    event.getChannel().sendMessage(addition(messages[2], messages[3])).queue();
+                    break;
+                case "sub":
+                    event.getChannel().sendMessage(subtraction(messages[2], messages[3])).queue();
+                    break;
+                case "mult":
+                    event.getChannel().sendMessage(multiplication(messages[2], messages[3])).queue();
+                    break;
+                case "div":
+                    event.getChannel().sendMessage(division(messages[2], messages[3])).queue();
+                    break;
+                default:
+                    event.getChannel().sendMessage("no operation detected").queue();
+            }
+        } catch (Exception e) {
+            event.getChannel().sendMessage("Invalid Operands.").queue();
+            e.printStackTrace();
         }
     }
 }
