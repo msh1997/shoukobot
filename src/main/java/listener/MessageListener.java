@@ -1,5 +1,7 @@
 package listener;
 
+
+import modules.calc.CalculatorEventHandler;
 import modules.customReactions.CustomEventHandler;
 import modules.tf2.logs.LogsEventHandler;
 import modules.tf2.ConnectStringParser;
@@ -23,6 +25,7 @@ public class MessageListener extends ListenerAdapter {
     private MiscEventHandler miscEventHandler;
     private LogsEventHandler logsEventHandler;
     private HelpEventHandler helpEventHandler;
+    private CalculatorEventHandler calculatorEventHandler;
 
 
     public MessageListener(String prefix) {
@@ -32,15 +35,16 @@ public class MessageListener extends ListenerAdapter {
         miscEventHandler = new MiscEventHandler();
         logsEventHandler = new LogsEventHandler();
         helpEventHandler = new HelpEventHandler();
+        calculatorEventHandler = new CalculatorEventHandler();
     }
+
+    public CalculatorEventHandler getCalculatorEventHandler () { return calculatorEventHandler; }
 
     public OsuEventHandler getOsuEventHandler() {
         return osuEventHandler;
     }
 
-    public void setOsuEventHandler(OsuEventHandler osuEventHandler) {
-        this.osuEventHandler = osuEventHandler;
-    }
+    public void setOsuEventHandler(OsuEventHandler osuEventHandler) { this.osuEventHandler = osuEventHandler; }
 
     public CustomEventHandler getCustomEventHandler() {
         return customEventHandler;
@@ -96,6 +100,9 @@ public class MessageListener extends ListenerAdapter {
                 break;
             case "help":
                 helpEventHandler.helpEvent(messages, event);
+                break;
+            case "calc":
+                calculatorEventHandler.calcEvent(messages, event);
                 break;
             default:
                 miscEventHandler.miscEvent(messages, event);
