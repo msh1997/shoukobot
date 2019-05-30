@@ -2,7 +2,6 @@ resources/osu.properties
 resources/OsuUsers.json
 resources/CustomCommands.json
 .gradle
-.idea
-.idea/misc.xml
+.idea/*
 build
 out
