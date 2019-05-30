@@ -34,23 +34,6 @@ public class LogsEventHandler {
         }
     }
 
-    public void logsEvent(String[] messages, MessageReceivedEvent event) throws IOException, ParseException {
-        switch (messages[1]) {
-            case "get":
-                getTrackedUser(messages, event);
-                break;
-            case "add":
-                addTrackedUser(messages, event);
-                break;
-            case "remove":
-                removeTrackedUser(messages, event);
-                break;
-            case "list":
-                listTrackedUsers(event);
-                break;
-        }
-    }
-
     private void listTrackedUsers(MessageReceivedEvent event) {
         String users = "";
         String ids = "";
@@ -162,6 +145,23 @@ public class LogsEventHandler {
             }
         } else {
             event.getChannel().sendMessage("User and/or steamID is not being tracked.").queue();
+        }
+    }
+
+    public void logsEvent(String[] messages, MessageReceivedEvent event) throws IOException, ParseException {
+        switch (messages[1]) {
+            case "get":
+                getTrackedUser(messages, event);
+                break;
+            case "add":
+                addTrackedUser(messages, event);
+                break;
+            case "remove":
+                removeTrackedUser(messages, event);
+                break;
+            case "list":
+                listTrackedUsers(event);
+                break;
         }
     }
 
