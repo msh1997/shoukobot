@@ -1,4 +1,4 @@
-package modules.tf2.logs;
+package shoukobot.modules.tf2.logs;
 
 import com.fasterxml.jackson.core.type.TypeReference;
 import com.fasterxml.jackson.databind.ObjectMapper;

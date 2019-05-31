@@ -1,6 +1,8 @@
-package modules.misc;
+package shoukobot.modules.misc;
 
+import net.dv8tion.jda.core.JDA;
 import net.dv8tion.jda.core.events.message.MessageReceivedEvent;
+import shoukobot.Main;
 
 public class MiscEventHandler {
     public MiscEventHandler() {
@@ -9,7 +11,9 @@ public class MiscEventHandler {
 
     public void miscEvent(String[] messages, MessageReceivedEvent event) {
         if (messages[0].equals("ping")) {
-            event.getChannel().sendMessage("pong").queue();
+            JDA jda = Main.getJda();
+            long ms = jda.getPing();
+            event.getChannel().sendMessage("pong! (" + ms + "ms)").queue();
         }
 
         if (messages[0].equals("echo")) {

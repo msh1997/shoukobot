@@ -1,4 +1,4 @@
-package modules.osu;
+package shoukobot.modules.osu;
 
 import java.util.List;
 

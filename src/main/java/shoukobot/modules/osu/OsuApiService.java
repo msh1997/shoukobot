@@ -1,4 +1,4 @@
-package modules.osu;
+package shoukobot.modules.osu;
 
 public class OsuApiService {
 
