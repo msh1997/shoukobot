@@ -1,17 +1,16 @@
-package listener;
+package shoukobot.listener;
 
-
-import modules.calc.CalculatorEventHandler;
-import modules.customReactions.CustomEventHandler;
-import modules.tf2.logs.LogsEventHandler;
-import modules.tf2.ConnectStringParser;
-import modules.misc.MiscEventHandler;
-import modules.osu.OsuEventHandler;
-import modules.help.HelpEventHandler;
-import org.json.simple.parser.ParseException;
-import shoukobot.services.MessageParser;
 import net.dv8tion.jda.core.events.message.MessageReceivedEvent;
 import net.dv8tion.jda.core.hooks.ListenerAdapter;
+import org.json.simple.parser.ParseException;
+import shoukobot.modules.calc.CalculatorEventHandler;
+import shoukobot.modules.customReactions.CustomEventHandler;
+import shoukobot.modules.help.HelpEventHandler;
+import shoukobot.modules.misc.MiscEventHandler;
+import shoukobot.modules.osu.OsuEventHandler;
+import shoukobot.modules.tf2.ConnectStringParser;
+import shoukobot.modules.tf2.logs.LogsEventHandler;
+import shoukobot.services.MessageParser;
 
 import java.io.IOException;
 
@@ -50,9 +49,7 @@ public class MessageListener extends ListenerAdapter {
         return customEventHandler;
     }
 
-    public void setCustomEventHandler(CustomEventHandler customEventHandler) {
-        this.customEventHandler = customEventHandler;
-    }
+    public void setCustomEventHandler(CustomEventHandler customEventHandler) { this.customEventHandler = customEventHandler; }
 
     public LogsEventHandler getLogsEventHandler() {
         return logsEventHandler;

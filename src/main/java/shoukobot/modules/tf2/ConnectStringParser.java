@@ -1,4 +1,4 @@
-package modules.tf2;
+package shoukobot.modules.tf2;
 
 import net.dv8tion.jda.core.events.message.MessageReceivedEvent;
 

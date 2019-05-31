@@ -3,13 +3,16 @@ package shoukobot;
 import listener.MessageListener;
 import modules.osu.OsuApiService;
 import net.dv8tion.jda.core.AccountType;
+import net.dv8tion.jda.core.JDA;
 import net.dv8tion.jda.core.JDABuilder;
+import net.dv8tion.jda.core.entities.Game;
+import shoukobot.listener.MessageListener;
+import shoukobot.modules.osu.OsuApiService;
 import shoukobot.services.rconClient.RconClient;
 
 import javax.security.auth.login.LoginException;
 import java.io.FileInputStream;
 import java.io.IOException;
-import java.nio.charset.Charset;
 import java.util.Properties;
 
 public class Main {
@@ -18,17 +21,17 @@ public class Main {
     private String prefix = "";
     private String osuApiKey = "";
     public static JDABuilder builder;
+    public static JDA jda;
 
     public Main() throws IOException, LoginException {
         setProperties();
         this.builder = new JDABuilder(AccountType.BOT);
         builder.setToken(token);
+        builder.setGame(Game.playing("Type r.help to get started!"));
         MessageListener listener = new MessageListener(prefix);
         OsuApiService.apiKey = osuApiKey;
         builder.addEventListener(listener);
-        builder.buildAsync();
-        RconClient rconClient = new RconClient("162.248.92.151", 27015, "link_1012".getBytes(Charset.forName("UTF-8")));
-        rconClient.sendCommand("say aaaaaa");
+        this.jda = builder.buildAsync();
     }
 
     public void setProperties() throws IOException {

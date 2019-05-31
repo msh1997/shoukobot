@@ -1,4 +1,4 @@
-package modules.calc;
+package shoukobot.modules.calc;
 
 import net.dv8tion.jda.core.events.message.MessageReceivedEvent;
 

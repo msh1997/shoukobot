@@ -1,4 +1,4 @@
-package modules.customReactions;
+package shoukobot.modules.customReactions;
 
 import net.dv8tion.jda.core.events.message.MessageReceivedEvent;
 import net.dv8tion.jda.core.entities.MessageEmbed.Field;

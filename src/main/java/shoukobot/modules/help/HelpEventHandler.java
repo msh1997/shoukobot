@@ -1,4 +1,4 @@
-package modules.help;
+package shoukobot.modules.help;
 
 import net.dv8tion.jda.core.events.message.MessageReceivedEvent;
 import net.dv8tion.jda.core.entities.MessageEmbed.Field;
