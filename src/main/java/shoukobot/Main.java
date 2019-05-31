@@ -44,6 +44,10 @@ public class Main {
         return jda;
     }
 
+    public static JDABuilder getBuilder() {
+        return builder;
+    }
+
     public static void main(String[] args) throws LoginException, IOException {
         new Main();
     }
