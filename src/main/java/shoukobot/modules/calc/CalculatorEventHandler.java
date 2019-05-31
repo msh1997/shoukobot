@@ -43,14 +43,16 @@ public class CalculatorEventHandler {
             rawExpr.append(messages[i]);
         }
 
-        String[] rawExprArray = rawExpr.toString().split("(?<=[-+*/()])|(?=[-+*/()])");
+        String[] rawExprArray = rawExpr.toString().split("(?<=[-+*/%^()])|(?=[-+*/%^()])");
 
         StringBuilder expr = new StringBuilder();
         for (String s : rawExprArray) {
             expr.append(s + " ");
         }
 
-        String[] postfixArray = postfix(expr.toString()).split(" ");
+        String postfix = postfix(expr.toString());
+        System.out.println(postfix);
+        String[] postfixArray = postfix.split(" ");
         Stack<Float> stack = new Stack<>();
 
         for (String s : postfixArray) {
@@ -73,8 +75,11 @@ public class CalculatorEventHandler {
                     case "/":
                         stack.push(operand2 / operand1);
                         break;
+                    case "%":
+                        stack.push(operand2 % operand1);
+                        break;
                     case "^":
-                        stack.push((float) Math.pow(operand1, operand2));
+                        stack.push((float) Math.pow(operand2, operand1));
                         break;
                 }
             }

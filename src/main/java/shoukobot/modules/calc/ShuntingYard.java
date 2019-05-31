@@ -9,7 +9,7 @@ import java.util.*;
 public class ShuntingYard {
 
     private enum Operator {
-        ADD(1), SUBTRACT(2), MULTIPLY(3), DIVIDE(4);
+        ADD(1), SUBTRACT(2), MULTIPLY(3), DIVIDE(4), MOD(5), POW(6);
         final int precedence;
 
         Operator(int p) {
@@ -22,6 +22,8 @@ public class ShuntingYard {
         put("-", Operator.SUBTRACT);
         put("*", Operator.MULTIPLY);
         put("/", Operator.DIVIDE);
+        put("%", Operator.MOD);
+        put("^", Operator.POW);
     }};
 
     private static boolean isHigherPrec(String op, String sub) {

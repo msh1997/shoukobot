@@ -144,7 +144,7 @@ public class HelpEventHandler {
     public void calcHelp(String[] messages, MessageReceivedEvent event) {
         if(messages.length < 3) {
             String name = "Available Commands in Calculator Module";
-            String value = "add\nsub\nmult\ndiv\n\n" +
+            String value = "add\nsub\nmult\ndiv\nexpression\n\n" +
                     "For further information about a specific command,\n" +
                     "append the command name\n" +
                     "Ex: r.help calc add";
@@ -172,6 +172,13 @@ public class HelpEventHandler {
                 name = "r.calc div [Operand_1] [Operand_2]";
                 value = "Divides Operand_1 by Operand_2.";
                 break;
+            case "expression":
+                name = "r.calc expression [expression]";
+                value = "Evaluates an entire expression.\n" +
+                        "Valid operands: +, -, *, /, ^\n" +
+                        "Expression evaluated through Shunting Yard\n" +
+                        "algorithmic conversion to postfix notation\n" +
+                        "and then stack evaluation.";
         }
         Field field = new Field(name, value, true);
         sendEmbed(field, new Color(0, 255, 0), event);
