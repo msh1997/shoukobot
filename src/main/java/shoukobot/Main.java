@@ -4,10 +4,12 @@ import listener.MessageListener;
 import modules.osu.OsuApiService;
 import net.dv8tion.jda.core.AccountType;
 import net.dv8tion.jda.core.JDABuilder;
+import shoukobot.services.rconClient.RconClient;
 
 import javax.security.auth.login.LoginException;
 import java.io.FileInputStream;
 import java.io.IOException;
+import java.nio.charset.Charset;
 import java.util.Properties;
 
 public class Main {
@@ -25,6 +27,8 @@ public class Main {
         OsuApiService.apiKey = osuApiKey;
         builder.addEventListener(listener);
         builder.buildAsync();
+        RconClient rconClient = new RconClient("162.248.92.151", 27015, "link_1012".getBytes(Charset.forName("UTF-8")));
+        rconClient.sendCommand("say aaaaaa");
     }
 
     public void setProperties() throws IOException {
