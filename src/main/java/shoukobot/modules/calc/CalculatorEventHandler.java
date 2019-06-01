@@ -51,7 +51,7 @@ public class CalculatorEventHandler {
         }
 
         String postfix = postfix(expr.toString());
-        System.out.println(postfix);
+        //System.out.println(postfix);
         String[] postfixArray = postfix.split(" ");
         Stack<Float> stack = new Stack<>();
 

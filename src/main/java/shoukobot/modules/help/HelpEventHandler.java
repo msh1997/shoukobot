@@ -12,7 +12,7 @@ public class HelpEventHandler {
     public void reactionsHelp(String[] messages, MessageReceivedEvent event) {
         if(messages.length < 3) {
             String name = "Available Commands in Reactions Module";
-            String value = "add\ndelete\nlist\n\n" +
+            String value = "add\ndelete/remove\nlist\n\n" +
                     "For further information about a specific command,\n" +
                     "append the command name\n" +
                     "Ex: r.help reactions add";
@@ -31,6 +31,7 @@ public class HelpEventHandler {
                         "and that the reaction content follows after.";
                 break;
             case "delete":
+            case "remove":
                 name = "r.reactions delete [Reaction Trigger]";
                 value = "Deletes a reaction from the list of custom reactions.";
                 break;
@@ -46,7 +47,7 @@ public class HelpEventHandler {
     public void osuHelp(String[] messages, MessageReceivedEvent event) {
         if(messages.length < 3) {
             String name = "Available Commands in osu! Module";
-            String value = "add\nremove\nlist\n\n" +
+            String value = "add\ndelete/remove\nlist\n\n" +
                     "For further information about a specific command,\n" +
                     "append the command name\n" +
                     "Ex: r.help osu add";
@@ -62,6 +63,7 @@ public class HelpEventHandler {
                 name = "r.osu add [Username]";
                 value = "Adds a user to the list of tracked osu! players.\n";
                 break;
+            case "delete":
             case "remove":
                 name = "r.osu remove [Username]";
                 value = "Deletes a user from the list of osu! players.";
@@ -100,7 +102,7 @@ public class HelpEventHandler {
     public void logsHelp(String[] messages, MessageReceivedEvent event) {
         if(messages.length < 4) {
             String name = "Available Commands in logs.tf Module";
-            String value = "add\nremove\nget\nlist\n\n" +
+            String value = "add\ndelete/remove\nget\nlist\n\n" +
                     "For further information about a specific command,\n" +
                     "append the command name\n" +
                     "Ex: r.help tf2 logs add";
@@ -116,8 +118,9 @@ public class HelpEventHandler {
                 name = "r.logs add [Username] [SteamID64]";
                 value = "Adds a user to the list of tracked logs.tf users.\n";
                 break;
+            case "delete":
             case "remove":
-                name = "r.logs remove [Username OR SteamID64]";
+                name = "r.logs delete/remove [Username OR SteamID64]";
                 value = "Deletes a user from the list of tracked logs.tf users.";
                 break;
             case "get":

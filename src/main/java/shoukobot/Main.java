@@ -40,12 +40,8 @@ public class Main {
         osuApiKey = properties.getProperty("api-key");
     }
 
-    public static JDA getJda(){
-        return jda;
-    }
-
-    public static JDABuilder getBuilder() {
-        return builder;
+    public static long getPing(){
+        return jda.getPing();
     }
 
     public static void main(String[] args) throws LoginException, IOException {

@@ -20,10 +20,8 @@ public class LogsApiService {
 
     public LogsApiService() {
         objectMapper = new ObjectMapper();
-
     }
 
-    // TODO: make this work
     public boolean checkId(String ID) throws IOException, ParseException {
         String path = "http://logs.tf/api/v1/log?player=" + ID + "&limit=0";
         JSONObject response = HttpRequests.getHttpResponse(path, new HashMap<>());

@@ -63,4 +63,3 @@ public class ShuntingYard {
         return output.toString();
     }
 }
-

@@ -107,7 +107,6 @@ public class LogsEventHandler {
         if (containsId(messages[3])) {
             event.getChannel().sendMessage("That Steam ID already exists.").queue();
         } else {
-            // TODO: make this work
             if (!logsApiService.checkId(user.getSteamId())) {
                 event.getChannel().sendMessage("That Steam ID is invalid.").queue();
                 return;
@@ -156,6 +155,7 @@ public class LogsEventHandler {
             case "add":
                 addTrackedUser(messages, event);
                 break;
+            case "delete":
             case "remove":
                 removeTrackedUser(messages, event);
                 break;

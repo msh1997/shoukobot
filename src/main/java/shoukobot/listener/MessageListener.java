@@ -71,39 +71,39 @@ public class MessageListener extends ListenerAdapter {
             customEventHandler.customEvent(event.getMessage().getContentRaw(), event);
         }
 
-        if (!messages[0].startsWith(this.prefix)) {
-            if (messages[0].equals("connect")) {
-                connectStringParser.connectString(messages, event);
-            }
-            return;
-        }
-
-        messages[0] = messages[0].substring(this.prefix.length());
-        switch (messages[0]) {
-            case "osu":
-                osuEventHandler.osuEvent(messages, event);
-                break;
-            case "reactions":
-                customEventHandler.customCommandEvent(messages, event.getMessage().getContentRaw(), event);
-                break;
-            case "logs":
-                try {
-                    logsEventHandler.logsEvent(messages, event);
-                } catch (IOException e) {
-                    e.printStackTrace();
-                } catch (ParseException e) {
-                    e.printStackTrace();
+        if (messages.length > 0) {
+            if (!messages[0].startsWith(this.prefix)) {
+                if (messages[0].equals("connect")) {
+                    connectStringParser.connectString(messages, event);
                 }
-                break;
-            case "help":
-                helpEventHandler.helpEvent(messages, event);
-                break;
-            case "calc":
-                calculatorEventHandler.calcEvent(messages, event);
-                break;
-            default:
-                miscEventHandler.miscEvent(messages, event);
-                break;
+                return;
+            }
+
+            messages[0] = messages[0].substring(this.prefix.length());
+            switch (messages[0]) {
+                case "osu":
+                    osuEventHandler.osuEvent(messages, event);
+                    break;
+                case "reactions":
+                    customEventHandler.customCommandEvent(messages, event.getMessage().getContentRaw(), event);
+                    break;
+                case "logs":
+                    try {
+                        logsEventHandler.logsEvent(messages, event);
+                    } catch (IOException | ParseException e) {
+                        e.printStackTrace();
+                    }
+                    break;
+                case "help":
+                    helpEventHandler.helpEvent(messages, event);
+                    break;
+                case "calc":
+                    calculatorEventHandler.calcEvent(messages, event);
+                    break;
+                default:
+                    miscEventHandler.miscEvent(messages, event);
+                    break;
+            }
         }
     }
 }

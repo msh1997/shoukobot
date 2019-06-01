@@ -10,8 +10,8 @@ public class MiscEventHandler {
     }
 
     public void ping(MessageReceivedEvent event) {
-        long ms = Main.getJda().getPing();
-        event.getChannel().sendMessage(":ping_pong: pong! [" + ms + " ms]").queue();
+        long ms = Main.getPing();
+        event.getChannel().sendMessage(":ping_pong: pong! `[" + ms + " ms]`").queue();
     }
 
     public void echo(String[] messages, MessageReceivedEvent event) {
