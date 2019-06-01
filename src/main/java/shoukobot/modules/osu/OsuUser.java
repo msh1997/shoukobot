@@ -9,10 +9,40 @@ public class OsuUser {
     private int playtime;
     private int rankGlobal;
     private int rankCountry;
-    private int acc;
+    private long acc;
 
     public OsuUser(String username) {
         this.username = username;
+    }
+
+//    public OsuUser(@JsonProperty("username") String username, @JsonProperty("user_id") int osuId,
+//                   @JsonProperty("pp_raw") int pp, @JsonProperty("playcount") int playCount,
+//                   @JsonProperty("total_seconds_played") int playtime,
+//                   @JsonProperty("pp_rank") int rankGlobal, @JsonProperty("pp_country_rank") int rankCountry,
+//                   @JsonProperty("accuracy") long acc) {
+//        this.username = username;
+//        this.osuId = osuId;
+//        this.pp = pp;
+//        this.playCount = playCount;
+//        this.playtime = playtime;
+//        this.rankGlobal = rankGlobal;
+//        this.rankCountry = rankCountry;
+//        this.acc = acc;
+//    }
+
+    public OsuUser(String username, int osuId,
+                   int pp, int playCount,
+                   int playtime,
+                   int rankGlobal, int rankCountry,
+                   long acc) {
+        this.username = username;
+        this.osuId = osuId;
+        this.pp = pp;
+        this.playCount = playCount;
+        this.playtime = playtime;
+        this.rankGlobal = rankGlobal;
+        this.rankCountry = rankCountry;
+        this.acc = acc;
     }
 
     public String getUsername() {
@@ -71,7 +101,7 @@ public class OsuUser {
         this.rankCountry = rankCountry;
     }
 
-    public int getAcc() {
+    public long getAcc() {
         return acc;
     }
 

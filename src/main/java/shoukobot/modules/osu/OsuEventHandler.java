@@ -1,16 +1,21 @@
 package shoukobot.modules.osu;
 
 import net.dv8tion.jda.core.events.message.MessageReceivedEvent;
+import net.dv8tion.jda.core.entities.MessageEmbed.Field;
 import org.json.simple.JSONArray;
 import org.json.simple.JSONObject;
 import org.json.simple.parser.JSONParser;
 import org.json.simple.parser.ParseException;
 
+import java.awt.*;
 import java.io.FileReader;
 import java.io.FileWriter;
 import java.io.IOException;
 import java.util.ArrayList;
 import java.util.List;
+
+import static shoukobot.modules.osu.OsuApiService.getOsuUser;
+import static shoukobot.services.Embeds.sendEmbed;
 
 public class OsuEventHandler {
 
@@ -82,6 +87,21 @@ public class OsuEventHandler {
         }
     }
 
+    public void getUser(String[] messages, MessageReceivedEvent event) throws IOException, ParseException {
+        if (messages.length > 2) {
+            OsuUser user = getOsuUser(messages[2]);
+
+            String name = "osu! stats for " + user.getUsername();
+            String value = "";
+
+            value += "Acc: " + user.getAcc() + "\n";
+            value += "pp: " + user.getPp();
+
+            Field field = new Field(name, value, true);
+            sendEmbed(field, new Color(0, 255, 0), event);
+        }
+    }
+
     public void writeTrackedUsersJson() {
         JSONObject usersJson = new JSONObject();
         JSONArray usersJsonArray = new JSONArray();
@@ -100,12 +120,23 @@ public class OsuEventHandler {
     }
 
     public void osuEvent(String[] messages, MessageReceivedEvent event) {
-        if (messages[1].equals("add")) {
-            addUserToTracking(messages, event);
-        } else if (messages[1].equals("list")) {
-            listTrackedUsers(messages, event);
-        } else if (messages[1].equals("remove")) {
-            removeTrackedUser(messages, event);
+        switch (messages[1]) {
+            case "add":
+                addUserToTracking(messages, event);
+                break;
+            case "list":
+                listTrackedUsers(messages, event);
+                break;
+            case "remove":
+                removeTrackedUser(messages, event);
+                break;
+            case "get":
+                try {
+                    getUser(messages, event);
+                } catch (IOException | ParseException e) {
+                    e.printStackTrace();
+                }
+                break;
         }
     }
 }
