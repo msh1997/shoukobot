@@ -2,6 +2,7 @@ package shoukobot.modules.osu;
 
 import com.fasterxml.jackson.databind.ObjectMapper;
 import org.json.simple.JSONArray;
+import org.json.simple.JSONObject;
 import org.json.simple.parser.ParseException;
 import shoukobot.services.HttpRequests;
 
@@ -24,9 +25,9 @@ public class OsuApiService {
 
     public static OsuUser getOsuUser(String username) throws IOException, ParseException {
         String path = "https://osu.ppy.sh/api/get_user?k=" + apiKey + "&u=" + username;
-        JSONArray response = HttpRequests.getOsuHttpResponse(path, new HashMap<>());
+        JSONObject response = HttpRequests.getHttpResponse(path, new HashMap<>());
 
-        String userString = response.get(0).toString();
+        String userString = ((JSONArray)response.get("response")).get(0).toString();
         OsuUser user = new ObjectMapper().readValue(userString, OsuUser.class);
 
         System.out.println(response.toJSONString());

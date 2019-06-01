@@ -29,16 +29,13 @@ public class HttpRequests {
         headers.keySet().forEach(headerKey -> get.setHeader(headerKey, headers.get(headerKey)));
         HttpResponse response = client.execute(get);
         String responseBody = EntityUtils.toString(response.getEntity());
-        return (JSONObject) parser.parse(responseBody);
-    }
-
-    public static JSONArray getOsuHttpResponse(String path, HashMap<String, String> headers) throws IOException, ParseException {
-        HttpClient client = HttpClientBuilder.create().build();
-        HttpGet get = new HttpGet(path);
-        headers.keySet().forEach(headerKey -> get.setHeader(headerKey, headers.get(headerKey)));
-        HttpResponse response = client.execute(get);
-        String responseBody = EntityUtils.toString(response.getEntity());
-        return (JSONArray) parser.parse(responseBody);
+        try {
+            return (JSONObject) parser.parse(responseBody);
+        }catch (ClassCastException e){
+            JSONObject object = new JSONObject();
+            object.put("response", parser.parse(responseBody));
+            return object;
+        }
     }
 
     public static JSONObject postHttpResponse(String path, List<NameValuePair> form, HashMap<String, String> headers) throws IOException, ParseException {
