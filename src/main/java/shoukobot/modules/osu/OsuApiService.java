@@ -26,8 +26,11 @@ public class OsuApiService {
         String path = "https://osu.ppy.sh/api/get_user?k=" + apiKey + "&u=" + username;
         JSONArray response = HttpRequests.getOsuHttpResponse(path, new HashMap<>());
 
+        String userString = response.get(0).toString();
+        OsuUser user = new ObjectMapper().readValue(userString, OsuUser.class);
+
         System.out.println(response.toJSONString());
 
-        return new OsuUser(username);
+        return user;
     }
 }

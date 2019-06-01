@@ -1,36 +1,41 @@
 package shoukobot.modules.osu;
 
+import com.fasterxml.jackson.annotation.JsonIgnoreProperties;
+import com.fasterxml.jackson.annotation.JsonProperty;
+
+@JsonIgnoreProperties(value={"join_date", "count300", "count100", "count50", "ranked_score", "total_score", "level", "count_rank_ss", "count_rank_ssh", "count_rank_s",
+        "count_rank_sh", "count_rank_a", "country", "events"})
 public class OsuUser {
 
     private String username;
     private int osuId;
-    private int pp;
+    private double pp;
     private int playCount;
     private int playtime;
     private int rankGlobal;
     private int rankCountry;
-    private long acc;
+    private double acc;
 
     public OsuUser(String username) {
         this.username = username;
     }
 
-//    public OsuUser(@JsonProperty("username") String username, @JsonProperty("user_id") int osuId,
-//                   @JsonProperty("pp_raw") int pp, @JsonProperty("playcount") int playCount,
-//                   @JsonProperty("total_seconds_played") int playtime,
-//                   @JsonProperty("pp_rank") int rankGlobal, @JsonProperty("pp_country_rank") int rankCountry,
-//                   @JsonProperty("accuracy") long acc) {
-//        this.username = username;
-//        this.osuId = osuId;
-//        this.pp = pp;
-//        this.playCount = playCount;
-//        this.playtime = playtime;
-//        this.rankGlobal = rankGlobal;
-//        this.rankCountry = rankCountry;
-//        this.acc = acc;
-//    }
+    public OsuUser(@JsonProperty("username") String username, @JsonProperty("user_id") int osuId,
+                   @JsonProperty("pp_raw") double pp, @JsonProperty("playcount") int playCount,
+                   @JsonProperty("total_seconds_played") int playtime,
+                   @JsonProperty("pp_rank") int rankGlobal, @JsonProperty("pp_country_rank") int rankCountry,
+                   @JsonProperty("accuracy") double acc) {
+        this.username = username;
+        this.osuId = osuId;
+        this.pp = pp;
+        this.playCount = playCount;
+        this.playtime = playtime;
+        this.rankGlobal = rankGlobal;
+        this.rankCountry = rankCountry;
+        this.acc = acc;
+    }
 
-    public OsuUser(String username, int osuId,
+    /*public OsuUser(String username, int osuId,
                    int pp, int playCount,
                    int playtime,
                    int rankGlobal, int rankCountry,
@@ -43,8 +48,9 @@ public class OsuUser {
         this.rankGlobal = rankGlobal;
         this.rankCountry = rankCountry;
         this.acc = acc;
-    }
+    }*/
 
+    @JsonProperty("username")
     public String getUsername() {
         return username;
     }
@@ -53,6 +59,7 @@ public class OsuUser {
         this.username = username;
     }
 
+    @JsonProperty("user_id")
     public int getOsuId() {
         return osuId;
     }
@@ -61,7 +68,8 @@ public class OsuUser {
         this.osuId = osuId;
     }
 
-    public int getPp() {
+    @JsonProperty("pp")
+    public double getPp() {
         return pp;
     }
 
@@ -69,6 +77,7 @@ public class OsuUser {
         this.pp = pp;
     }
 
+    @JsonProperty("playcount")
     public int getPlaycount() {
         return playCount;
     }
@@ -77,6 +86,7 @@ public class OsuUser {
         this.playCount = playcount;
     }
 
+    @JsonProperty("playtime")
     public int getPlaytime() {
         return playtime;
     }
@@ -85,6 +95,7 @@ public class OsuUser {
         this.playtime = playtime;
     }
 
+    @JsonProperty("rank")
     public int getRankGlobal() {
         return rankGlobal;
     }
@@ -93,6 +104,7 @@ public class OsuUser {
         this.rankGlobal = rankGlobal;
     }
 
+    @JsonProperty("country_rank")
     public int getRankCountry() {
         return rankCountry;
     }
@@ -101,11 +113,12 @@ public class OsuUser {
         this.rankCountry = rankCountry;
     }
 
-    public long getAcc() {
+    @JsonProperty("accuracy")
+    public double getAcc() {
         return acc;
     }
 
-    public void setAcc(int acc) {
+    public void setAcc(double acc) {
         this.acc = acc;
     }
 }
