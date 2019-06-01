@@ -6,3 +6,4 @@ resources/CustomCommands.json
 build
 out
 gradle/*
+shoukobot.iml
