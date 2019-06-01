@@ -5,4 +5,4 @@ resources/CustomCommands.json
 .idea/*
 build
 out
-gradle
+gradle/*
