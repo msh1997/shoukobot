@@ -20,6 +20,7 @@ import static shoukobot.services.Embeds.sendEmbed;
 public class OsuEventHandler {
 
     private List<String> osuUsersList = new ArrayList<>();
+    // TODO change osu user stored as KV-pairs with discord id and user id
 
     public OsuEventHandler() {
         JSONParser jsonParser = new JSONParser();
